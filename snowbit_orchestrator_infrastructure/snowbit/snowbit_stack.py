@@ -138,3 +138,14 @@ class SnowbitStack(Stack):
             max_capacity=10
         ).scale_on_utilization(target_utilization_percent=75)
         
+        # ! Reference Data DynamoDB Table
+        reference_data = dynamodb.Table(self, "ReferenceDataTable",
+        partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
+        replication_regions=["us-east-1", "us-east-2"],
+        billing_mode=dynamodb.BillingMode.PROVISIONED
+        )
+
+        reference_data.auto_scale_write_capacity(
+            min_capacity=1,
+            max_capacity=10
+        ).scale_on_utilization(target_utilization_percent=75)
