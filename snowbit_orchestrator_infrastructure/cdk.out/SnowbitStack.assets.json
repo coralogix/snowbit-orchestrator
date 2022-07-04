@@ -1,0 +1,19 @@
+{
+  "version": "20.0.0",
+  "files": {
+    "6993d7401faadb80fa64f3461562f9edbdab77ed76eab1a9cb881a4dc29d13fa": {
+      "source": {
+        "path": "SnowbitStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}",
+          "objectKey": "6993d7401faadb80fa64f3461562f9edbdab77ed76eab1a9cb881a4dc29d13fa.json",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-${AWS::Region}"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
