@@ -2,6 +2,7 @@ from aws_cdk import Stack
 from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_elasticloadbalancingv2 as alb
 from aws_cdk import aws_elasticloadbalancingv2_targets as target
+from aws_cdk import aws_dynamodb as dynamodb
 from constructs import Construct
 
 class SnowbitStack(Stack):
@@ -125,3 +126,15 @@ class SnowbitStack(Stack):
             id='sm-snowbit-target-group',
             target_groups=[self.tg_1]
         )
+        # ! Transaction Data DynamoDB Table
+        transactional_data = dynamodb.Table(self, "TransactionalDataTable",
+        partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
+        replication_regions=["us-east-1", "us-east-2"],
+        billing_mode=dynamodb.BillingMode.PROVISIONED
+        )
+
+        transactional_data.auto_scale_write_capacity(
+            min_capacity=1,
+            max_capacity=10
+        ).scale_on_utilization(target_utilization_percent=75)
+        
