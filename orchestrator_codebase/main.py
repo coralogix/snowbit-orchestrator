@@ -38,15 +38,19 @@ class FlaskAppWrapper(object):
 
 
 def action():
-    alert_name = request.get_json()['name']
-    alert_severity = ""
-    for i in request.get_json()["fields"]:
-        if i["key"] == "severity":
-            alert_severity = i["value"]
-    action.data = {'accountId': "account_id", 'alertDescription': "desc", 'alertName': alert_name,
-                   'alertSeverity': alert_severity}
+    try:
+        alert_name = request.get_json()['name']
+        alert_severity = ""
+        for i in request.get_json()["fields"]:
+            if i["key"] == "severity":
+                alert_severity = i["value"]
+        action.data = {'accountId': "account_id", 'alertDescription': "desc", 'alertName': alert_name,
+                    'alertSeverity': alert_severity}
 
-    return "OK"
+        return "OK"
+    except KeyError:
+        # should this error be logged to cloudwatch using boto3
+        pass
 
 
 def returning_action():
