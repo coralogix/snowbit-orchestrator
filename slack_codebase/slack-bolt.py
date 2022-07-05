@@ -45,7 +45,6 @@ def post_message_to_slack():
 
 @app.action("message_response")
 def handle_some_action(ack, body, logger, say):
-    print("**BEGIN HERE**")
     ack()
     user = body['user']
     say(f"Thanks <@{user['name']}>!")
@@ -62,7 +61,8 @@ def handle_some_action(ack, body, logger, say):
         },
         ReturnValues="UPDATED_NEW"
     )
-    app.client.chat_delete(channel=body['channel']['id'], ts=body['message_ts'])
+    app.client.chat_update(channel=body['channel']['id'], ts=body['message_ts'], text='Alert acknowledged!',
+                           attachments=[])
 
 
 if __name__ == "__main__":
