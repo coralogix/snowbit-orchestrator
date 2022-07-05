@@ -50,7 +50,6 @@ async def handle_some_action(ack, body, logger, say):
     await say(f"Thanks <@{user['name']}>!")
     logger.info(body['message_ts'])
     print(body['message_ts'])
-    print(body['user']['name'])
     table.update_item(
         Key={
             'timestamp': body['message_ts'],
@@ -62,7 +61,8 @@ async def handle_some_action(ack, body, logger, say):
         },
         ReturnValues="UPDATED_NEW"
     )
-    app.client.chat_delete(channel=body['channel']['id'], ts=body['message_ts'])
+    app.client.chat_update(channel=body['channel']['id'], ts=body['message_ts'], text='Alert acknowledged!',
+                           attachments=[])
 
 
 async def main():
