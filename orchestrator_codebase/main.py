@@ -1,7 +1,9 @@
+from readline import insert_text
 import signal
 from flask import Flask, Response, render_template, request
 import logging
 from validate import *
+from inserttodb import *
 
 
 class EndpointAction(object):
@@ -17,7 +19,9 @@ class EndpointAction(object):
         process_json = w.localize()
         v = Validate(process_json)
         result = v.localize()
-        print(result)
+        if result == "VALID":
+            i = InserttoDb(process_json)
+            i.localize()
         if response is not None:
             return response
         else:
