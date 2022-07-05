@@ -8,8 +8,6 @@ import os
 logging.basicConfig(level=logging.DEBUG)
 
 
-# app.client.chat_postMessage(channel="#testbot2", text="test")
-
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Slackacktable')
 
@@ -64,11 +62,10 @@ def handle_some_action(ack, body, logger, say):
         },
         ReturnValues="UPDATED_NEW"
     )
+    app.client.chat_delete(channel=body['channel']['id'], ts=body['message_ts'])
 
 
 if __name__ == "__main__":
-    # export SLACK_APP_TOKEN=xapp-***
-    # export SLACK_BOT_TOKEN=xoxb-***
     response = post_message_to_slack()
     print("This is the timestamp = {}".format(response['ts']))
     table.put_item(Item={'timestamp': response['ts'], 'current_status': 'awaiting response'})
