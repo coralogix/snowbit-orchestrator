@@ -56,6 +56,9 @@ def action():
         # should this error be logged to cloudwatch using boto3
         pass
 
+    except json.decoder.JSONDecodeError:
+        print('Invalid JSON')
+
 
 def returning_action():
     return render_template('index.html')
