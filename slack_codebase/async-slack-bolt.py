@@ -62,6 +62,7 @@ async def handle_some_action(ack, body, logger, say):
         },
         ReturnValues="UPDATED_NEW"
     )
+    app.client.chat_delete(channel=body['channel']['id'], ts=body['message_ts'])
 
 
 async def main():
