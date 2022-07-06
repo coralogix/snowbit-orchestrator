@@ -3,6 +3,7 @@ from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_elasticloadbalancingv2 as alb
 from aws_cdk import aws_elasticloadbalancingv2_targets as target
 from aws_cdk import aws_dynamodb as dynamodb
+from aws_cdk import aws_iam 
 from constructs import Construct
 
 class SnowbitStack(Stack):
@@ -59,8 +60,8 @@ class SnowbitStack(Stack):
             id='sm-snowbit-instance',
             vpc=self.vpc,
             instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.NANO),
-            machine_image=ec2.MachineImage.generic_linux(
-                {'us-east-1': 'ami-083654bd07b5da81d'}
+            machine_image=ec2.MachineImage.latest_amazon_linux(
+                generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
             ),
             key_name="demokeyyt18",
             security_group=self.sg,
@@ -69,6 +70,11 @@ class SnowbitStack(Stack):
             )
         )
 
+        with open('./lib/post_initialization.sh', 'r', encoding='utf-8') as file:
+            user_data = file.read()
+
+        self.ec2_instance.add_user_data(user_data)
+        
         # ! Public instance - 2
         self.ec2_instance_2 = ec2.Instance(self,
             id='sm-snowbit-instance-2',
@@ -127,25 +133,41 @@ class SnowbitStack(Stack):
             target_groups=[self.tg_1]
         )
         # ! Transaction Data DynamoDB Table
-        transactional_data = dynamodb.Table(self, "TransactionalDataTable",
+        self.transactional_data = dynamodb.Table(self, "TransactionalDataTable",
         partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
-        replication_regions=["us-east-1", "us-east-2"],
+        # replication_regions=["us-east-1", "us-east-2"],
         billing_mode=dynamodb.BillingMode.PROVISIONED
         )
 
-        transactional_data.auto_scale_write_capacity(
+        self.transactional_data.auto_scale_write_capacity(
             min_capacity=1,
             max_capacity=10
         ).scale_on_utilization(target_utilization_percent=75)
         
         # ! Reference Data DynamoDB Table
-        reference_data = dynamodb.Table(self, "ReferenceDataTable",
+        self.reference_data = dynamodb.Table(self, "ReferenceDataTable",
         partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
-        replication_regions=["us-east-1", "us-east-2"],
+        # replication_regions=["us-east-1", "us-east-2"],
         billing_mode=dynamodb.BillingMode.PROVISIONED
         )
 
-        reference_data.auto_scale_write_capacity(
+        self.reference_data.auto_scale_write_capacity(
             min_capacity=1,
             max_capacity=10
         ).scale_on_utilization(target_utilization_percent=75)
+
+        # ! PUBLIC EC2 TO REFERENCE TABLE
+        self.ec2_instance_2.add_to_role_policy(
+            aws_iam.PolicyStatement(
+                actions=['dynamodb:Getitem'],
+                resources=[self.reference_data.table_arn]
+            )
+        )
+
+        # ! PRIVATE EC2 TO TRANSACTIONAL TABLE 
+        self.ec2_instance_3.add_to_role_policy(
+            statement=aws_iam.PolicyStatement(
+                actions=['dynamodb:Getitem', 'dynamodb:PutItem', 'dynamodb:UpdateItem'],
+                resources=[self.transactional_data.table_arn]
+            )
+        )
