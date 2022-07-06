@@ -100,7 +100,7 @@ class SnowbitStack(Stack):
         )
         
         # ! Target instances
-        instance_target_1 = target.InstanceTarget(self.ec2_instance, port=80)
+        instance_target_1 = target.InstanceTarget(self.ec2_instance_2, port=80)
         # ! ALB target group definition
         self.tg_1 = alb.ApplicationTargetGroup(self,
             id='sm-snowbit-tg-1',
