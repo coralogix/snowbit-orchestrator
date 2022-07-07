@@ -60,8 +60,8 @@ class SnowbitStack(Stack):
             id='sm-snowbit-instance',
             vpc=self.vpc,
             instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.NANO),
-            machine_image=ec2.MachineImage.latest_amazon_linux(
-                generation=ec2.AmazonLinuxGeneration.AMAZON_LINUX_2
+            machine_image=ec2.MachineImage.generic_linux(
+                {'us-east-1': 'ami-083654bd07b5da81d'}
             ),
             key_name="demokeyyt18",
             security_group=self.sg,
@@ -107,14 +107,16 @@ class SnowbitStack(Stack):
         
         # ! Target instances
         instance_target_1 = target.InstanceTarget(self.ec2_instance_2, port=80)
+        instance_target_2 = target.InstanceTarget(self.ec2_instance, port=80)
         # ! ALB target group definition
         self.tg_1 = alb.ApplicationTargetGroup(self,
             id='sm-snowbit-tg-1',
             target_type=alb.TargetType.INSTANCE,
             port=80,
             vpc=self.vpc,
-            targets=[instance_target_1]
+            targets=[instance_target_1, instance_target_2]
         )
+        
         # ! Application Load Balancer
         self.alb = alb.ApplicationLoadBalancer(self, 
             id='sm-snowbit-alb',
