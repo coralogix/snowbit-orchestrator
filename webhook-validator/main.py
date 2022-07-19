@@ -5,7 +5,7 @@ import json
 from webhook_handler import WebhookHandler
 from validate import Validate
 from inserttodb import InserttoDb
-from async_slack import *
+
 
 app = Flask(__name__)
 
