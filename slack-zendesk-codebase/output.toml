@@ -1,0 +1,13 @@
+database_messages = [ "",]
+
+[slack_details.post_message_to_slack]
+text = "An alert with description as {} has been raised in coralogix account {}. Is it approved operation or not?"
+color = "#3AA3E3"
+alert_message = "Alert Raised!"
+
+[slack_details.thanks_for_response]
+text = "Thanks <@{}>!"
+
+[zendesk_details.ttl_data]
+"low/med" = 86400
+"high/critical" = 1800
