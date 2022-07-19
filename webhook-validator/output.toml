@@ -1,0 +1,6 @@
+[validation]
+key_error = "one of the keys {} could not be found in webhook"
+json_decode_error = "Wrong JSON format provided as input"
+
+[database_opr]
+insertion_success = "insertion successful for alert_id {} from aws_account_id at {}"
