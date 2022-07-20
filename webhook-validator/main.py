@@ -2,9 +2,15 @@ from flask import request, Flask
 from threading import Thread
 import requests
 import json
+import toml
 from webhook_handler import WebhookHandler
 from validate import Validate
-from inserttodb import InserttoDb
+from insert_to_db import InserttoDb
+
+
+output_file_name = "output.toml"
+with open(output_file_name, "r") as toml_file:
+    toml_data_dict = toml.load(toml_file)
 
 
 app = Flask(__name__)
@@ -24,7 +30,7 @@ class Compute(Thread):
             i = InserttoDb(process_json)
             i.insertjson_todb()
             payload = process_json
-            url = 'http://127.0.0.1:8000/receiveslack'
+            url = toml_data_dict['url']['local_server_url']
             headers = {'Content-type': 'application/json; charset=UTF-8'}
             response = requests.request("POST", url, data=json.dumps(payload), headers=headers)
             print(response.text)
