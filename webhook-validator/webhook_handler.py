@@ -25,15 +25,15 @@ class WebhookHandler:
     def webhook_extractor(self):
         try:
             alert_severity = ''
-            aws_account_id = self.data['aws_account_id']
-            alert_id = self.data['alert_id']
+            account_id = self.data['account_id']
+            alert_id = self.data['uuid']
             alert_description = self.data['description']
             alert_name = self.data['name']
             for i in self.data['fields']:
                 if i['key'] == "severity":
                     alert_severity = i['value']
             processed_json = {'alert_id': alert_id,
-                              'aws_account_id': aws_account_id,
+                              'account_id': account_id,
                               'alert_description': alert_description, 'alert_name': alert_name,
                               'alert_severity': alert_severity}
             return processed_json
