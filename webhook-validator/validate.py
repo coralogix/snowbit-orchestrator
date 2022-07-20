@@ -22,11 +22,11 @@ class Validate:
 
     def json_validator(self):
         flag = 0
-        if isinstance(self.p_data['alert_id'], int) and len(str(self.p_data['alert_id'])) == 12:
+        if isinstance(self.p_data['alert_id'], str) and len(self.p_data['alert_id']) == 36:
             if isinstance(self.p_data['alert_description'], str) and len(self.p_data['alert_description']) >= 5:
                 if isinstance(self.p_data['alert_name'], str) and len(self.p_data['alert_name']) >= 5:
                     if isinstance(self.p_data['alert_severity'], str):
-                        if len(str(self.p_data['aws_account_id'])) == 12:
+                        if len(self.p_data['account_id']) == 12:
                             # if isinstance(self.p_data['alert_severity'], enum.EnumMeta) and
                             # (self.p_data['alert_severity']) in type(self.p_data['alertSeverity'].__name__):
                             flag = 1
@@ -48,8 +48,8 @@ class Validate:
                 logEvents=[
                     {
                         'timestamp': timestamp,
-                        'message': "VALID JSON EXPRESSION for alert_id {} from aws_account_id at {} at time {}"
-                            .format(self.p_data['alert_id'], self.p_data['aws_account_id'],
+                        'message': "VALID JSON EXPRESSION for alert_id {} from account_id at {} at time {}"
+                            .format(self.p_data['alert_id'], self.p_data['account_id'],
                                     time.strftime('%Y-%m-%d %H:%M:%S'))
                     },
                 ],
