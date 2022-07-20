@@ -1,6 +1,7 @@
 from flask import request, Flask
 from threading import Thread
-from async_slack import *
+import asyncio
+from async_messaging import *
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ class Compute(Thread):
         asyncio.run(main(self.request))
 
 
-@app.route('/receiveslack', methods=["POST"])  # change naming conventions
+@app.route('/processpayload', methods=["POST"])  
 def myfunc():
     req = request.get_json()
     thread_a = Compute(req)
