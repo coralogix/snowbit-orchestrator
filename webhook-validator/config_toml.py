@@ -12,13 +12,16 @@ data = {
   'database_opr': {
     'insertion_success': 'insertion successful for alert_id {} from aws_account_id at {}'
 
+  },
+  'url': {
+    'local_server_url': 'http://127.0.0.1:8000/processpayload'
   }
 }
 
 
-# toml_string = toml.dumps(data)  # writes to above data toml file
+# toml_string = toml.dumps(data)  
 
-# with open(output_file_name, "w") as toml_file:
+# with open(output_file_name, "w") as toml_file:  # writes 'data' to toml file
 #     toml.dump(data, toml_file)
 
 
