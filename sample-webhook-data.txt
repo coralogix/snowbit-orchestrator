@@ -1,0 +1,51 @@
+{
+    "uuid": "445f13d4-98f6-4948-3cc3-edf45a505487",
+    "name": "$ALERT_NAME",
+    "alert_url": "$ALERT_URL",
+    "icon_url": "$CORALOGIX_ICON_URL",
+    "fields": [
+        {
+            "key": "application",
+            "value": "$APPLICATION_NAME"
+        },
+        {
+            "key": "subsystem",
+            "value": "$SUBSYSTEM_NAME"
+        },
+        {
+            "key": "severity",
+            "value": "$EVENT_SEVERITY"
+        },
+        {
+            "key": "computer",
+            "value": "$COMPUTER_NAME"
+        },
+        {
+            "key": "ipAddress",
+            "value": "$IP_ADDRESS"
+        },
+        {
+            "key": "timestamp",
+            "value": "$EVENT_TIMESTAMP"
+        },
+        {
+            "key": "alert action",
+            "value": "$ALERT_ACTION"
+        },
+        {
+            "key": "alert url",
+            "value": "$ALERT_URL"
+        },
+        {
+            "key": "description",
+            "value": "$ALERT_DESCRIPTION"
+        }
+    ]
+}
+
+
+
+
+
+
+
