@@ -666,7 +666,7 @@
      }
     ],
     "UserData": {
-     "Fn::Base64": "#!/bin/bash"
+     "Fn::Base64": "#!/bin/bash\n#!/bin/bash\n\napt-get update -y\napt-get install nginx -y\n\nsystemctl status nginx"
     }
    },
    "DependsOn": [
@@ -894,6 +894,12 @@
     "Targets": [
      {
       "Id": {
+       "Ref": "smsnowbitinstance2EA560B23"
+      },
+      "Port": 80
+     },
+     {
+      "Id": {
        "Ref": "smsnowbitinstanceDAF6FC51"
       },
       "Port": 80
@@ -965,10 +971,584 @@
     "aws:cdk:path": "SnowbitStack/sm-snowbit-alb/sm-snowbit-listener/Resource"
    }
   },
+  "tblTransactionalDataTableB5E3911A": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "timestamp",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "timestamp",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "StreamSpecification": {
+     "StreamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "TimeToLiveSpecification": {
+     "AttributeName": "ttl",
+     "Enabled": true
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/Resource"
+   }
+  },
+  "tblTransactionalDataTableWriteScalingTarget3011AB9C": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblTransactionalDataTableB5E3911A"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblTransactionalDataTableWriteScalingTargetTrackingFB6B64C1": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblTransactionalDataTableWriteScalingTargetTracking1C38E478",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblTransactionalDataTableWriteScalingTarget3011AB9C"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "tblReferenceDataTableEC8CCADA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "account_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "account_id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/Resource"
+   }
+  },
+  "tblReferenceDataTableWriteScalingTargetA149EB95": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblReferenceDataTableEC8CCADA"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblReferenceDataTableWriteScalingTargetTracking5D57878C": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblReferenceDataTableWriteScalingTargetTrackingBB12C0C2",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblReferenceDataTableWriteScalingTargetA149EB95"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "tblWebhookDataTableCCADDFD6": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "alert_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "alert_id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/Resource"
+   }
+  },
+  "tblWebhookDataTableWriteScalingTarget5B6E9A38": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblWebhookDataTableCCADDFD6"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblWebhookDataTableWriteScalingTargetTracking445263E9": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblWebhookDataTableWriteScalingTargetTrackingD0539E80",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblWebhookDataTableWriteScalingTarget5B6E9A38"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "LambdaRole3A44B857": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "DynamoDB executionRole for Lambda",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaRole/Resource"
+   }
+  },
+  "LambdaRoleDefaultPolicy75625A82": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:SendMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "streamqueueDBCEFDF5",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "dynamodb:ListStreams",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "tblTransactionalDataTableB5E3911A",
+         "StreamArn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaRoleDefaultPolicy75625A82",
+    "Roles": [
+     {
+      "Ref": "LambdaRole3A44B857"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaRole/DefaultPolicy/Resource"
+   }
+  },
+  "secretpolicy9FB83878": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:ListSecretVersionIds"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "secretpolicy9FB83878",
+    "Roles": [
+     {
+      "Ref": "LambdaRole3A44B857"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/secret-policy/Resource"
+   }
+  },
+  "zenpylambdalayer2E39B294": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "677a0914d7682f8837feb4b0d47f3515a43be9dbb0c557424643738b0bebb7ef.zip"
+    },
+    "CompatibleRuntimes": [
+     "python3.7"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/zenpy-lambda-layer/Resource",
+    "aws:asset:path": "asset.677a0914d7682f8837feb4b0d47f3515a43be9dbb0c557424643738b0bebb7ef",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "LambdaDBstreamshandler0499EEC8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "36ac08414798e6e1ed71421b22b66c673e9c27157aaae193b4a3e6b804b5f676.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Handler": "dbstream_function.handler",
+    "Layers": [
+     {
+      "Ref": "zenpylambdalayer2E39B294"
+     }
+    ],
+    "Runtime": "python3.7"
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaDBstreamshandler/Resource",
+    "aws:asset:path": "asset.36ac08414798e6e1ed71421b22b66c673e9c27157aaae193b4a3e6b804b5f676",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaDBstreamshandlerDynamoDBEventSourceSnowbitStacktblTransactionalDataTable40DA5877FB1D8C33": {
+   "Type": "AWS::Lambda::EventSourceMapping",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "LambdaDBstreamshandler0499EEC8"
+    },
+    "BatchSize": 5,
+    "BisectBatchOnFunctionError": true,
+    "DestinationConfig": {
+     "OnFailure": {
+      "Destination": {
+       "Fn::GetAtt": [
+        "streamqueueDBCEFDF5",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "EventSourceArn": {
+     "Fn::GetAtt": [
+      "tblTransactionalDataTableB5E3911A",
+      "StreamArn"
+     ]
+    },
+    "MaximumRetryAttempts": 10,
+    "StartingPosition": "TRIM_HORIZON"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877/Resource"
+   }
+  },
+  "streamqueueDBCEFDF5": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/streamqueue/Resource"
+   }
+  },
+  "SOLogGroupB340DE11": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log Group/Resource"
+   }
+  },
+  "SOLogGroupPolicyResourcePolicyCCABFAD3": {
+   "Type": "AWS::Logs::ResourcePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"es.amazonaws.com\"},\"Resource\":\"",
+       {
+        "Fn::GetAtt": [
+         "SOLogGroupB340DE11",
+         "Arn"
+        ]
+       },
+       "\"}],\"Version\":\"2012-10-17\"}"
+      ]
+     ]
+    },
+    "PolicyName": "SnowbitStackSOLogGroupPolicyBAB30460"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log Group/Policy/ResourcePolicy"
+   }
+  },
+  "SOLogS3Bucket9D1BAD5D": {
+   "Type": "AWS::S3::Bucket",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log S3 Bucket/Resource"
+   }
+  },
+  "SOLogStream06FF14E0": {
+   "Type": "AWS::Logs::LogStream",
+   "Properties": {
+    "LogGroupName": {
+     "Ref": "SOLogGroupB340DE11"
+    },
+    "LogStreamName": "SOlogStream"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SOLogStream/Resource"
+   }
+  },
+  "SsmStringParameterTransactionalTable9E73A7EC": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblTransactionalDataTableB5E3911A"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Transactional DynamoDB table",
+    "Name": "transactional_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterTransactionalTable/Resource"
+   }
+  },
+  "SsmStringParameterReferenceTableDAC4B25F": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblReferenceDataTableEC8CCADA"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Reference DynamoDB table",
+    "Name": "reference_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterReferenceTable/Resource"
+   }
+  },
+  "SsmStringParameterWebhookTableBAE9B636": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblWebhookDataTableCCADDFD6"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Webhook data DynamoDB table",
+    "Name": "webhook_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterWebhookTable/Resource"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1VQwW7CMAz9Fu4hm9hlHDs0oUrbVLWI6+QGA4aQVIkDQlX/fWlL13Ly8/PT87MXcrGUrzO4+bnaneeaSlkXDOosIvVbo1rIelspsdqbbbYSWSg1qSKUBrnlRpTbwLiBUuPIj1zivVUETNb8i1vwmWZt+QFeA+MN7iJzdI1wNE4No4t4EPRJHl3CMevxgoZFgSo44vva2VB1GZ6I1HgGo7C37HEjCC6yzm0feqjDOHN2TzqqUINnUtrCrgQdR2QO1/iYpKriN7qrNuAOMeOwe9pOVF/R4aNzQNfKnvqpjjyjeWgeuGlEjt4G19/wDVUVY3S5J/TKmh21Fo3I7ny05uVNvsvl7OSJ5i4YpgvKvK9/sIah2vwBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VTTW/bMAz9Lb2r2pqeekyDrgiQDV4c5FrQMptqsaVMolIEhv/7KMkfSXfi4/MT9UjKC7l4kt/v4NPfq/p43+hKdiWBOgqm3jpUC9ntT0qs3s2+WIkiVI1WZagMUuRmtLWBcAdVgzM/c0vvrdJA2ppJHMHLuojhF9ArEH7CRRROnxnOhdeG0DEeBdnJkC2JvX60aEiUqILTdHl1NpyShxtibTyBUZhLZtwLDa3stjabHuP4uXD2XTNVWO45XZxRL7ABT1o1FuoKGtZqczjzpJanEwtSmztwBzY9mrlOr1QbrvCcKqCLspv8Wqc9oRk0A+5FfTHQ2ppXNg0+gV7AfBQCWa+gYYuyewaPJSdpJ0ROV3ERI5NNptndMjnsHL8LLlPmavNYboheNNBWNchuAxd0e3R+2PpN/iMYNT6HCb+ceZOlDU7hT26Ba6ZH8h/bC//4Bt4jebmMgXNuLqgjUmxRZBgPZ8QH/nrZ/Q4Y0pgSYKf2wOzGHqY9TXiLPt04d/mFYWVJDqEdjuWEL/Jt/IVcHAg4aJHy2qak76fikR8bTX3wr3cYur7WrKypdZxQL4oLfVjz7VE+yYeHuz9e63sXDOkW5TbHfxh8W27TAwAA"
    },
    "Metadata": {
     "aws:cdk:path": "SnowbitStack/CDKMetadata/Default"

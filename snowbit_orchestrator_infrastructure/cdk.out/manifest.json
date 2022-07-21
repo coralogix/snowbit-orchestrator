@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/6993d7401faadb80fa64f3461562f9edbdab77ed76eab1a9cb881a4dc29d13fa.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f42bacf81d009393de956150054f10b5f0482b03f41a38eeb54da25d5aef1a93.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -283,6 +283,144 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "smsnowbitalbsmsnowbitlistener2BEEEA53"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableB5E3911A"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableWriteScalingTarget3011AB9C"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableWriteScalingTargetTrackingFB6B64C1"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableEC8CCADA"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableWriteScalingTargetA149EB95"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableWriteScalingTargetTracking5D57878C"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableCCADDFD6"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableWriteScalingTarget5B6E9A38"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableWriteScalingTargetTracking445263E9"
+          }
+        ],
+        "/SnowbitStack/LambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRole3A44B857"
+          }
+        ],
+        "/SnowbitStack/LambdaRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRoleDefaultPolicy75625A82"
+          }
+        ],
+        "/SnowbitStack/secret-policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secretpolicy9FB83878"
+          }
+        ],
+        "/SnowbitStack/zenpy-lambda-layer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "zenpylambdalayer2E39B294"
+          }
+        ],
+        "/SnowbitStack/LambdaDBstreamshandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaDBstreamshandler0499EEC8"
+          }
+        ],
+        "/SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaDBstreamshandlerDynamoDBEventSourceSnowbitStacktblTransactionalDataTable40DA5877FB1D8C33"
+          }
+        ],
+        "/SnowbitStack/streamqueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "streamqueueDBCEFDF5"
+          }
+        ],
+        "/SnowbitStack/SO Log Group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogGroupB340DE11"
+          }
+        ],
+        "/SnowbitStack/SO Log Group/Policy/ResourcePolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogGroupPolicyResourcePolicyCCABFAD3"
+          }
+        ],
+        "/SnowbitStack/SO Log S3 Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogS3Bucket9D1BAD5D"
+          }
+        ],
+        "/SnowbitStack/SOLogStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogStream06FF14E0"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterTransactionalTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterTransactionalTable9E73A7EC"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterReferenceTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterReferenceTableDAC4B25F"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterWebhookTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterWebhookTableBAE9B636"
           }
         ],
         "/SnowbitStack/CDKMetadata/Default": [
