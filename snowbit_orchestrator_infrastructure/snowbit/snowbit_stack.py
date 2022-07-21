@@ -1,9 +1,15 @@
-from aws_cdk import Stack
+from aws_cdk import RemovalPolicy, Stack
 from aws_cdk import aws_ec2 as ec2
 from aws_cdk import aws_elasticloadbalancingv2 as alb
 from aws_cdk import aws_elasticloadbalancingv2_targets as target
 from aws_cdk import aws_dynamodb as dynamodb
 from aws_cdk import aws_iam 
+from aws_cdk import aws_lambda
+from aws_cdk import aws_sqs
+from aws_cdk import aws_lambda_event_sources
+from aws_cdk import aws_logs
+from aws_cdk import aws_s3
+from aws_cdk import aws_ssm
 from constructs import Construct
 
 class SnowbitStack(Stack):
@@ -135,10 +141,13 @@ class SnowbitStack(Stack):
             target_groups=[self.tg_1]
         )
         # ! Transaction Data DynamoDB Table
-        self.transactional_data = dynamodb.Table(self, "TransactionalDataTable",
-        partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
+        self.transactional_data = dynamodb.Table(self, "tbl_Transactional_Data_Table",
+        partition_key=dynamodb.Attribute(name="timestamp", type=dynamodb.AttributeType.STRING),
         # replication_regions=["us-east-1", "us-east-2"],
-        billing_mode=dynamodb.BillingMode.PROVISIONED
+        billing_mode=dynamodb.BillingMode.PROVISIONED,
+        removal_policy=RemovalPolicy.DESTROY,
+        stream=dynamodb.StreamViewType.NEW_AND_OLD_IMAGES,
+        time_to_live_attribute='ttl'
         )
 
         self.transactional_data.auto_scale_write_capacity(
@@ -147,10 +156,11 @@ class SnowbitStack(Stack):
         ).scale_on_utilization(target_utilization_percent=75)
         
         # ! Reference Data DynamoDB Table
-        self.reference_data = dynamodb.Table(self, "ReferenceDataTable",
-        partition_key=dynamodb.Attribute(name="aws_account_id", type=dynamodb.AttributeType.STRING),
+        self.reference_data = dynamodb.Table(self, "tbl_Reference_Data_Table",
+        partition_key=dynamodb.Attribute(name="account_id", type=dynamodb.AttributeType.STRING),
         # replication_regions=["us-east-1", "us-east-2"],
-        billing_mode=dynamodb.BillingMode.PROVISIONED
+        billing_mode=dynamodb.BillingMode.PROVISIONED,
+        removal_policy=RemovalPolicy.DESTROY
         )
 
         self.reference_data.auto_scale_write_capacity(
@@ -158,18 +168,132 @@ class SnowbitStack(Stack):
             max_capacity=10
         ).scale_on_utilization(target_utilization_percent=75)
 
-        # ! PUBLIC EC2 TO REFERENCE TABLE
-        self.ec2_instance_2.add_to_role_policy(
-            aws_iam.PolicyStatement(
-                actions=['dynamodb:Getitem'],
-                resources=[self.reference_data.table_arn]
-            )
+        # ! Webhook Data DynamoDB Table
+        self.webhook_data = dynamodb.Table(self, "tbl_Webhook_Data_Table",
+        partition_key=dynamodb.Attribute(name="alert_id", type=dynamodb.AttributeType.STRING),
+        billing_mode=dynamodb.BillingMode.PROVISIONED,
+        removal_policy=RemovalPolicy.DESTROY
         )
 
-        # ! PRIVATE EC2 TO TRANSACTIONAL TABLE 
-        self.ec2_instance_3.add_to_role_policy(
-            statement=aws_iam.PolicyStatement(
-                actions=['dynamodb:Getitem', 'dynamodb:PutItem', 'dynamodb:UpdateItem'],
-                resources=[self.transactional_data.table_arn]
-            )
+        self.webhook_data.auto_scale_write_capacity(
+            min_capacity=1,
+            max_capacity=10
+        ).scale_on_utilization(target_utilization_percent=75)
+
+        self.transactional_data.apply_removal_policy(RemovalPolicy.DESTROY)
+        self.reference_data.apply_removal_policy(RemovalPolicy.DESTROY)
+        self.webhook_data.apply_removal_policy(RemovalPolicy.DESTROY)
+
+        # ! Lambda Role for LambdaDBExecution
+        self.lambda_role = aws_iam.Role(self, "LambdaRole",
+        assumed_by=aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        description="DynamoDB executionRole for Lambda"
         )
+
+        self.lambda_role.add_managed_policy(aws_iam.ManagedPolicy.from_aws_managed_policy_name("service-role/AWSLambdaDynamoDBExecutionRole"))
+
+        # ! Policy to grant lambda access to aws-secrets
+        self.lambda_role.attach_inline_policy(
+            aws_iam.Policy(self, 'secret-policy',
+            statements=[
+                aws_iam.PolicyStatement(
+                    effect=aws_iam.Effect.ALLOW,
+                    actions = [
+                        "secretsmanager:GetRandomPassword", 
+                        "secretsmanager:GetResourcePolicy", 
+                        "secretsmanager:GetSecretValue", 
+                        "secretsmanager:DescribeSecret", 
+                        "secretsmanager:ListSecretVersionIds"
+
+                    ],
+                    resources= ['*']
+                )
+            ])
+        )
+
+        # ! Zenpy distribution for lambda as lambda layer
+        self.zenpy_lambdaLayer = aws_lambda.LayerVersion(self, 'zenpy-lambda-layer',
+                  code = aws_lambda.AssetCode('layer/'),
+                  compatible_runtimes = [aws_lambda.Runtime.PYTHON_3_7],
+        ) 
+
+        # ! Lambda for DB streams
+        self.lambda_dbstream = aws_lambda.Function(
+            self, 'LambdaDBstreamshandler',
+            runtime= aws_lambda.Runtime.PYTHON_3_7,
+            code= aws_lambda.Code.from_asset('lambda'),
+            layers=[self.zenpy_lambdaLayer],
+            handler='dbstream_function.handler',
+            role=self.lambda_role,
+        )
+
+        self.stream_queue = aws_sqs.Queue(self, "streamqueue")
+        self.lambda_dbstream.add_event_source(aws_lambda_event_sources.DynamoEventSource(self.transactional_data,
+        starting_position=aws_lambda.StartingPosition.TRIM_HORIZON,
+        batch_size=5,
+        bisect_batch_on_error=True,
+        on_failure=aws_lambda_event_sources.SqsDlq(self.stream_queue),
+        retry_attempts=10
+        ))
+
+        # ! Custom Log groups
+        self.so_log_group = aws_logs.LogGroup(self, "SO Log Group")
+        self.so_log_bucket = aws_s3.Bucket(self, "SO Log S3 Bucket")
+
+        self.so_log_group.add_to_resource_policy(aws_iam.PolicyStatement(
+        actions=["logs:CreateLogStream", "logs:PutLogEvents"],
+        principals=[aws_iam.ServicePrincipal("es.amazonaws.com")],
+        resources=[self.so_log_group.log_group_arn]
+        ))
+
+        self.so_log_stream = aws_logs.LogStream(self, "SOLogStream",
+        log_group=self.so_log_group,
+        log_stream_name="SOlogStream",
+        removal_policy=RemovalPolicy.DESTROY
+        )
+
+        # ! ssm parameters for ddb table names
+        aws_ssm.StringParameter(self, "SsmStringParameterTransactionalTable",
+        allowed_pattern=".*",
+        description="The name of the Transactional DynamoDB table",
+        parameter_name="transactional_db_name",
+        string_value=self.transactional_data.table_name,
+        tier=aws_ssm.ParameterTier.ADVANCED,
+        )
+
+        aws_ssm.StringParameter(self, "SsmStringParameterReferenceTable",
+        allowed_pattern=".*",
+        description="The name of the Reference DynamoDB table",
+        parameter_name="reference_db_name",
+        string_value=self.reference_data.table_name,
+        tier=aws_ssm.ParameterTier.ADVANCED,
+        )
+
+        aws_ssm.StringParameter(self, "SsmStringParameterWebhookTable",
+        allowed_pattern=".*",
+        description="The name of the Webhook data DynamoDB table",
+        parameter_name="webhook_db_name",
+        string_value=self.webhook_data.table_name,
+        tier=aws_ssm.ParameterTier.ADVANCED,
+        )
+
+
+
+
+        
+
+        # # ! PUBLIC EC2 TO REFERENCE TABLE
+        # self.ec2_instance_2.add_to_role_policy(
+        #     aws_iam.PolicyStatement(
+        #         actions=['dynamodb:Getitem'],
+        #         resources=[self.reference_data.table_arn]
+        #     )
+        # )
+
+        # # ! PRIVATE EC2 TO TRANSACTIONAL TABLE 
+        # self.ec2_instance_3.add_to_role_policy(
+        #     statement=aws_iam.PolicyStatement(
+        #         actions=['dynamodb:Getitem', 'dynamodb:PutItem', 'dynamodb:UpdateItem'],
+        #         resources=[self.transactional_data.table_arn]
+        #     )
+        # )
