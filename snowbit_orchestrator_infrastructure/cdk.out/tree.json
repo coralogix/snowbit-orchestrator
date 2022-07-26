@@ -1,0 +1,2720 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.1.51"
+        }
+      },
+      "SnowbitStack": {
+        "id": "SnowbitStack",
+        "path": "SnowbitStack",
+        "children": {
+          "sm-snowbit-vpc": {
+            "id": "sm-snowbit-vpc",
+            "path": "SnowbitStack/sm-snowbit-vpc",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-vpc/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPC",
+                  "aws:cdk:cloudformation:props": {
+                    "cidrBlock": "10.0.0.0/16",
+                    "enableDnsHostnames": true,
+                    "enableDnsSupport": true,
+                    "instanceTenancy": "default",
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/sm-snowbit-vpc"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPC",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-subnet-publicSubnet1": {
+                "id": "sm-snowbit-subnet-publicSubnet1",
+                "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.0.0/24",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "sm-snowbit-subnet-public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB"
+                        },
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "smsnowbitvpcIGW85571544"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "EIP": {
+                    "id": "EIP",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/EIP",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+                      "aws:cdk:cloudformation:props": {
+                        "domain": "vpc",
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "NATGateway": {
+                    "id": "NATGateway",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/NATGateway",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::NatGateway",
+                      "aws:cdk:cloudformation:props": {
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+                        },
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "smsnowbitvpcsmsnowbitsubnetpublicSubnet1EIP57A79015",
+                            "AllocationId"
+                          ]
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-subnet-publicSubnet2": {
+                "id": "sm-snowbit-subnet-publicSubnet2",
+                "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            1,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.1.0/24",
+                        "mapPublicIpOnLaunch": true,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "sm-snowbit-subnet-public"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Public"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9"
+                        },
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "gatewayId": {
+                          "Ref": "smsnowbitvpcIGW85571544"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "EIP": {
+                    "id": "EIP",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/EIP",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::EIP",
+                      "aws:cdk:cloudformation:props": {
+                        "domain": "vpc",
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnEIP",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "NATGateway": {
+                    "id": "NATGateway",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/NATGateway",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::NatGateway",
+                      "aws:cdk:cloudformation:props": {
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+                        },
+                        "allocationId": {
+                          "Fn::GetAtt": [
+                            "smsnowbitvpcsmsnowbitsubnetpublicSubnet2EIPF23DF3D3",
+                            "AllocationId"
+                          ]
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnNatGateway",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PublicSubnet",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-subnet-privateSubnet1": {
+                "id": "sm-snowbit-subnet-privateSubnet1",
+                "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            0,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.2.0/24",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "sm-snowbit-subnet-private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4"
+                        },
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1NATGatewayB8A1CAAC"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-subnet-privateSubnet2": {
+                "id": "sm-snowbit-subnet-privateSubnet2",
+                "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2",
+                "children": {
+                  "Subnet": {
+                    "id": "Subnet",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/Subnet",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Subnet",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "availabilityZone": {
+                          "Fn::Select": [
+                            1,
+                            {
+                              "Fn::GetAZs": ""
+                            }
+                          ]
+                        },
+                        "cidrBlock": "10.0.3.0/24",
+                        "mapPublicIpOnLaunch": false,
+                        "tags": [
+                          {
+                            "key": "aws-cdk:subnet-name",
+                            "value": "sm-snowbit-subnet-private"
+                          },
+                          {
+                            "key": "aws-cdk:subnet-type",
+                            "value": "Private"
+                          },
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnet",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "Acl": {
+                    "id": "Acl",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/Acl",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTable": {
+                    "id": "RouteTable",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTable",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::RouteTable",
+                      "aws:cdk:cloudformation:props": {
+                        "vpcId": {
+                          "Ref": "smsnowbitvpc5B258D6E"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRouteTable",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "RouteTableAssociation": {
+                    "id": "RouteTableAssociation",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTableAssociation",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::SubnetRouteTableAssociation",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331"
+                        },
+                        "subnetId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnSubnetRouteTableAssociation",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "DefaultRoute": {
+                    "id": "DefaultRoute",
+                    "path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/DefaultRoute",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::EC2::Route",
+                      "aws:cdk:cloudformation:props": {
+                        "routeTableId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331"
+                        },
+                        "destinationCidrBlock": "0.0.0.0/0",
+                        "natGatewayId": {
+                          "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2NATGateway5EC30677"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_ec2.CfnRoute",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.PrivateSubnet",
+                  "version": "2.29.0"
+                }
+              },
+              "IGW": {
+                "id": "IGW",
+                "path": "SnowbitStack/sm-snowbit-vpc/IGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::InternetGateway",
+                  "aws:cdk:cloudformation:props": {
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/sm-snowbit-vpc"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInternetGateway",
+                  "version": "2.29.0"
+                }
+              },
+              "VPCGW": {
+                "id": "VPCGW",
+                "path": "SnowbitStack/sm-snowbit-vpc/VPCGW",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::VPCGatewayAttachment",
+                  "aws:cdk:cloudformation:props": {
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    },
+                    "internetGatewayId": {
+                      "Ref": "smsnowbitvpcIGW85571544"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnVPCGatewayAttachment",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Vpc",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-sg": {
+            "id": "sm-snowbit-sg",
+            "path": "SnowbitStack/sm-snowbit-sg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-sg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SnowbitStack/sm-snowbit-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 22,
+                        "toPort": 22,
+                        "description": "Allow SSH from anywhere"
+                      },
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow HTTP from anywhere"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-alb-sg": {
+            "id": "sm-snowbit-alb-sg",
+            "path": "SnowbitStack/sm-snowbit-alb-sg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-alb-sg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SnowbitStack/sm-snowbit-alb-sg",
+                    "securityGroupEgress": [
+                      {
+                        "destinationSecurityGroupId": {
+                          "Fn::GetAtt": [
+                            "smsnowbitsg8B635388",
+                            "GroupId"
+                          ]
+                        },
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow health check"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 0,
+                        "toPort": 65535,
+                        "description": "Allow all inbound traffic"
+                      },
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow from anyone on port 80"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-private-sg": {
+            "id": "sm-snowbit-private-sg",
+            "path": "SnowbitStack/sm-snowbit-private-sg",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-private-sg/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::SecurityGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "groupDescription": "SnowbitStack/sm-snowbit-private-sg",
+                    "securityGroupEgress": [
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "description": "Allow all outbound traffic by default",
+                        "ipProtocol": "-1"
+                      }
+                    ],
+                    "securityGroupIngress": [
+                      {
+                        "sourceSecurityGroupId": {
+                          "Fn::GetAtt": [
+                            "smsnowbitsg8B635388",
+                            "GroupId"
+                          ]
+                        },
+                        "ipProtocol": "tcp",
+                        "fromPort": 22,
+                        "toPort": 22,
+                        "description": "Allow SSH from public subnet"
+                      },
+                      {
+                        "sourceSecurityGroupId": {
+                          "Fn::GetAtt": [
+                            "smsnowbitsg8B635388",
+                            "GroupId"
+                          ]
+                        },
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow HTTP from public subnet"
+                      },
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow from anyone on port 80"
+                      }
+                    ],
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnSecurityGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.SecurityGroup",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-instance": {
+            "id": "sm-snowbit-instance",
+            "path": "SnowbitStack/sm-snowbit-instance",
+            "children": {
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "SnowbitStack/sm-snowbit-instance/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-instance/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-instance"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.29.0"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "SnowbitStack/sm-snowbit-instance/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "smsnowbitinstanceInstanceRole755AA52D"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.29.0"
+                }
+              },
+              "AmiMap": {
+                "id": "AmiMap",
+                "path": "SnowbitStack/sm-snowbit-instance/AmiMap",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnMapping",
+                  "version": "2.29.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-instance/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::Instance",
+                  "aws:cdk:cloudformation:props": {
+                    "availabilityZone": {
+                      "Fn::Select": [
+                        0,
+                        {
+                          "Fn::GetAZs": ""
+                        }
+                      ]
+                    },
+                    "iamInstanceProfile": {
+                      "Ref": "smsnowbitinstanceInstanceProfile25E0B609"
+                    },
+                    "imageId": {
+                      "Fn::FindInMap": [
+                        "smsnowbitinstanceAmiMapC93820B3",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "ami"
+                      ]
+                    },
+                    "instanceType": "t2.nano",
+                    "keyName": "demokeyyt18",
+                    "securityGroupIds": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitsg8B635388",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnetId": {
+                      "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/sm-snowbit-instance"
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": "#!/bin/bash\n#!/bin/bash\n\napt-get update -y\napt-get install nginx -y\n\nsystemctl status nginx"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInstance",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Instance",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-instance-2": {
+            "id": "sm-snowbit-instance-2",
+            "path": "SnowbitStack/sm-snowbit-instance-2",
+            "children": {
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "SnowbitStack/sm-snowbit-instance-2/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-instance-2/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-instance-2"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.29.0"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "SnowbitStack/sm-snowbit-instance-2/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "smsnowbitinstance2InstanceRole1EBFD9AB"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.29.0"
+                }
+              },
+              "AmiMap": {
+                "id": "AmiMap",
+                "path": "SnowbitStack/sm-snowbit-instance-2/AmiMap",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnMapping",
+                  "version": "2.29.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-instance-2/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::Instance",
+                  "aws:cdk:cloudformation:props": {
+                    "availabilityZone": {
+                      "Fn::Select": [
+                        0,
+                        {
+                          "Fn::GetAZs": ""
+                        }
+                      ]
+                    },
+                    "iamInstanceProfile": {
+                      "Ref": "smsnowbitinstance2InstanceProfile8734CDF5"
+                    },
+                    "imageId": {
+                      "Fn::FindInMap": [
+                        "smsnowbitinstance2AmiMap737B86BE",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "ami"
+                      ]
+                    },
+                    "instanceType": "t2.nano",
+                    "keyName": "demokeyyt18",
+                    "securityGroupIds": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitsg8B635388",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnetId": {
+                      "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/sm-snowbit-instance-2"
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": "#!/bin/bash"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInstance",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Instance",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-instance-3": {
+            "id": "sm-snowbit-instance-3",
+            "path": "SnowbitStack/sm-snowbit-instance-3",
+            "children": {
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "SnowbitStack/sm-snowbit-instance-3/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-instance-3/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/sm-snowbit-instance-3"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.29.0"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "SnowbitStack/sm-snowbit-instance-3/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "smsnowbitinstance3InstanceRole89D61BC1"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.29.0"
+                }
+              },
+              "AmiMap": {
+                "id": "AmiMap",
+                "path": "SnowbitStack/sm-snowbit-instance-3/AmiMap",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnMapping",
+                  "version": "2.29.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-instance-3/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::EC2::Instance",
+                  "aws:cdk:cloudformation:props": {
+                    "availabilityZone": {
+                      "Fn::Select": [
+                        0,
+                        {
+                          "Fn::GetAZs": ""
+                        }
+                      ]
+                    },
+                    "iamInstanceProfile": {
+                      "Ref": "smsnowbitinstance3InstanceProfile10D4EDF0"
+                    },
+                    "imageId": {
+                      "Fn::FindInMap": [
+                        "smsnowbitinstance3AmiMap33002027",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "ami"
+                      ]
+                    },
+                    "instanceType": "t2.nano",
+                    "keyName": "demokeyyt18",
+                    "securityGroupIds": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitsg8B635388",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnetId": {
+                      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/sm-snowbit-instance-3"
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": "#!/bin/bash"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ec2.CfnInstance",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ec2.Instance",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-tg-1": {
+            "id": "sm-snowbit-tg-1",
+            "path": "SnowbitStack/sm-snowbit-tg-1",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-tg-1/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "id": {
+                          "Ref": "smsnowbitinstance2EA560B23"
+                        },
+                        "port": 80
+                      },
+                      {
+                        "id": {
+                          "Ref": "smsnowbitinstanceDAF6FC51"
+                        },
+                        "port": 80
+                      }
+                    ],
+                    "targetType": "instance",
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationTargetGroup",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-alb": {
+            "id": "sm-snowbit-alb",
+            "path": "SnowbitStack/sm-snowbit-alb",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-alb/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                  "aws:cdk:cloudformation:props": {
+                    "loadBalancerAttributes": [
+                      {
+                        "key": "deletion_protection.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "scheme": "internet-facing",
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitalbsg8BBBBD39",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnets": [
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+                      },
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+                      }
+                    ],
+                    "type": "application"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-listener": {
+                "id": "sm-snowbit-listener",
+                "path": "SnowbitStack/sm-snowbit-alb/sm-snowbit-listener",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-alb/sm-snowbit-listener/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                      "aws:cdk:cloudformation:props": {
+                        "defaultActions": [
+                          {
+                            "type": "forward",
+                            "targetGroupArn": {
+                              "Ref": "smsnowbittg13A9D7010"
+                            }
+                          }
+                        ],
+                        "loadBalancerArn": {
+                          "Ref": "smsnowbitalbC2862C71"
+                        },
+                        "port": 80,
+                        "protocol": "HTTP"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationListener",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
+              "version": "2.29.0"
+            }
+          },
+          "tbl_Transactional_Data_Table": {
+            "id": "tbl_Transactional_Data_Table",
+            "path": "SnowbitStack/tbl_Transactional_Data_Table",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/tbl_Transactional_Data_Table/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "timestamp",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "timestamp",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    },
+                    "streamSpecification": {
+                      "streamViewType": "NEW_AND_OLD_IMAGES"
+                    },
+                    "timeToLiveSpecification": {
+                      "attributeName": "ttl",
+                      "enabled": true
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.29.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "SnowbitStack/tbl_Transactional_Data_Table/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.29.0"
+                }
+              },
+              "WriteScaling": {
+                "id": "WriteScaling",
+                "path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling",
+                "children": {
+                  "Target": {
+                    "id": "Target",
+                    "path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
+                          "aws:cdk:cloudformation:props": {
+                            "maxCapacity": 10,
+                            "minCapacity": 1,
+                            "resourceId": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "table/",
+                                  {
+                                    "Ref": "tblTransactionalDataTableB5E3911A"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":iam::",
+                                  {
+                                    "Ref": "AWS::AccountId"
+                                  },
+                                  ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+                                ]
+                              ]
+                            },
+                            "scalableDimension": "dynamodb:table:WriteCapacityUnits",
+                            "serviceNamespace": "dynamodb"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalableTarget",
+                          "version": "2.29.0"
+                        }
+                      },
+                      "Tracking": {
+                        "id": "Tracking",
+                        "path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyName": "SnowbitStacktblTransactionalDataTableWriteScalingTargetTracking1C38E478",
+                                "policyType": "TargetTrackingScaling",
+                                "scalingTargetId": {
+                                  "Ref": "tblTransactionalDataTableWriteScalingTarget3011AB9C"
+                                },
+                                "targetTrackingScalingPolicyConfiguration": {
+                                  "predefinedMetricSpecification": {
+                                    "predefinedMetricType": "DynamoDBWriteCapacityUtilization"
+                                  },
+                                  "targetValue": 75
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalingPolicy",
+                              "version": "2.29.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.TargetTrackingScalingPolicy",
+                          "version": "2.29.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_applicationautoscaling.ScalableTarget",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_applicationautoscaling.BaseScalableAttribute",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.29.0"
+            }
+          },
+          "tbl_Reference_Data_Table": {
+            "id": "tbl_Reference_Data_Table",
+            "path": "SnowbitStack/tbl_Reference_Data_Table",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/tbl_Reference_Data_Table/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "account_id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "account_id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.29.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "SnowbitStack/tbl_Reference_Data_Table/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.29.0"
+                }
+              },
+              "WriteScaling": {
+                "id": "WriteScaling",
+                "path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling",
+                "children": {
+                  "Target": {
+                    "id": "Target",
+                    "path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
+                          "aws:cdk:cloudformation:props": {
+                            "maxCapacity": 10,
+                            "minCapacity": 1,
+                            "resourceId": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "table/",
+                                  {
+                                    "Ref": "tblReferenceDataTableEC8CCADA"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":iam::",
+                                  {
+                                    "Ref": "AWS::AccountId"
+                                  },
+                                  ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+                                ]
+                              ]
+                            },
+                            "scalableDimension": "dynamodb:table:WriteCapacityUnits",
+                            "serviceNamespace": "dynamodb"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalableTarget",
+                          "version": "2.29.0"
+                        }
+                      },
+                      "Tracking": {
+                        "id": "Tracking",
+                        "path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyName": "SnowbitStacktblReferenceDataTableWriteScalingTargetTrackingBB12C0C2",
+                                "policyType": "TargetTrackingScaling",
+                                "scalingTargetId": {
+                                  "Ref": "tblReferenceDataTableWriteScalingTargetA149EB95"
+                                },
+                                "targetTrackingScalingPolicyConfiguration": {
+                                  "predefinedMetricSpecification": {
+                                    "predefinedMetricType": "DynamoDBWriteCapacityUtilization"
+                                  },
+                                  "targetValue": 75
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalingPolicy",
+                              "version": "2.29.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.TargetTrackingScalingPolicy",
+                          "version": "2.29.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_applicationautoscaling.ScalableTarget",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_applicationautoscaling.BaseScalableAttribute",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.29.0"
+            }
+          },
+          "tbl_Webhook_Data_Table": {
+            "id": "tbl_Webhook_Data_Table",
+            "path": "SnowbitStack/tbl_Webhook_Data_Table",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/tbl_Webhook_Data_Table/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "keySchema": [
+                      {
+                        "attributeName": "alert_id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "alert_id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.29.0"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "SnowbitStack/tbl_Webhook_Data_Table/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.29.0"
+                }
+              },
+              "WriteScaling": {
+                "id": "WriteScaling",
+                "path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling",
+                "children": {
+                  "Target": {
+                    "id": "Target",
+                    "path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalableTarget",
+                          "aws:cdk:cloudformation:props": {
+                            "maxCapacity": 10,
+                            "minCapacity": 1,
+                            "resourceId": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "table/",
+                                  {
+                                    "Ref": "tblWebhookDataTableCCADDFD6"
+                                  }
+                                ]
+                              ]
+                            },
+                            "roleArn": {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:",
+                                  {
+                                    "Ref": "AWS::Partition"
+                                  },
+                                  ":iam::",
+                                  {
+                                    "Ref": "AWS::AccountId"
+                                  },
+                                  ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+                                ]
+                              ]
+                            },
+                            "scalableDimension": "dynamodb:table:WriteCapacityUnits",
+                            "serviceNamespace": "dynamodb"
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalableTarget",
+                          "version": "2.29.0"
+                        }
+                      },
+                      "Tracking": {
+                        "id": "Tracking",
+                        "path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+                              "aws:cdk:cloudformation:props": {
+                                "policyName": "SnowbitStacktblWebhookDataTableWriteScalingTargetTrackingD0539E80",
+                                "policyType": "TargetTrackingScaling",
+                                "scalingTargetId": {
+                                  "Ref": "tblWebhookDataTableWriteScalingTarget5B6E9A38"
+                                },
+                                "targetTrackingScalingPolicyConfiguration": {
+                                  "predefinedMetricSpecification": {
+                                    "predefinedMetricType": "DynamoDBWriteCapacityUtilization"
+                                  },
+                                  "targetValue": 75
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_applicationautoscaling.CfnScalingPolicy",
+                              "version": "2.29.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_applicationautoscaling.TargetTrackingScalingPolicy",
+                          "version": "2.29.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_applicationautoscaling.ScalableTarget",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_applicationautoscaling.BaseScalableAttribute",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.29.0"
+            }
+          },
+          "LambdaRole": {
+            "id": "LambdaRole",
+            "path": "SnowbitStack/LambdaRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/LambdaRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "description": "DynamoDB executionRole for Lambda",
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                  "version": "2.29.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "SnowbitStack/LambdaRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/LambdaRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "sqs:GetQueueAttributes",
+                                "sqs:GetQueueUrl",
+                                "sqs:SendMessage"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "streamqueueDBCEFDF5",
+                                  "Arn"
+                                ]
+                              }
+                            },
+                            {
+                              "Action": "dynamodb:ListStreams",
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "dynamodb:DescribeStream",
+                                "dynamodb:GetRecords",
+                                "dynamodb:GetShardIterator"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::GetAtt": [
+                                  "tblTransactionalDataTableB5E3911A",
+                                  "StreamArn"
+                                ]
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "LambdaRoleDefaultPolicy75625A82",
+                        "roles": [
+                          {
+                            "Ref": "LambdaRole3A44B857"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Policy",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Role",
+              "version": "2.29.0"
+            }
+          },
+          "secret-policy": {
+            "id": "secret-policy",
+            "path": "SnowbitStack/secret-policy",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/secret-policy/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                  "aws:cdk:cloudformation:props": {
+                    "policyDocument": {
+                      "Statement": [
+                        {
+                          "Action": [
+                            "secretsmanager:DescribeSecret",
+                            "secretsmanager:GetRandomPassword",
+                            "secretsmanager:GetResourcePolicy",
+                            "secretsmanager:GetSecretValue",
+                            "secretsmanager:ListSecretVersionIds"
+                          ],
+                          "Effect": "Allow",
+                          "Resource": "*"
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "policyName": "secretpolicy9FB83878",
+                    "roles": [
+                      {
+                        "Ref": "LambdaRole3A44B857"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_iam.Policy",
+              "version": "2.29.0"
+            }
+          },
+          "zenpy-lambda-layer": {
+            "id": "zenpy-lambda-layer",
+            "path": "SnowbitStack/zenpy-lambda-layer",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "SnowbitStack/zenpy-lambda-layer/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "SnowbitStack/zenpy-lambda-layer/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "SnowbitStack/zenpy-lambda-layer/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.29.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/zenpy-lambda-layer/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::LayerVersion",
+                  "aws:cdk:cloudformation:props": {
+                    "content": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "677a0914d7682f8837feb4b0d47f3515a43be9dbb0c557424643738b0bebb7ef.zip"
+                    },
+                    "compatibleRuntimes": [
+                      "python3.7"
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnLayerVersion",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.LayerVersion",
+              "version": "2.29.0"
+            }
+          },
+          "LambdaDBstreamshandler": {
+            "id": "LambdaDBstreamshandler",
+            "path": "SnowbitStack/LambdaDBstreamshandler",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "SnowbitStack/LambdaDBstreamshandler/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "SnowbitStack/LambdaDBstreamshandler/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.29.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "SnowbitStack/LambdaDBstreamshandler/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.29.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/LambdaDBstreamshandler/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+                      },
+                      "s3Key": "36ac08414798e6e1ed71421b22b66c673e9c27157aaae193b4a3e6b804b5f676.zip"
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "LambdaRole3A44B857",
+                        "Arn"
+                      ]
+                    },
+                    "handler": "dbstream_function.handler",
+                    "layers": [
+                      {
+                        "Ref": "zenpylambdalayer2E39B294"
+                      }
+                    ],
+                    "runtime": "python3.7"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.29.0"
+                }
+              },
+              "DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877": {
+                "id": "DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877",
+                "path": "SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Lambda::EventSourceMapping",
+                      "aws:cdk:cloudformation:props": {
+                        "functionName": {
+                          "Ref": "LambdaDBstreamshandler0499EEC8"
+                        },
+                        "batchSize": 5,
+                        "bisectBatchOnFunctionError": true,
+                        "destinationConfig": {
+                          "onFailure": {
+                            "destination": {
+                              "Fn::GetAtt": [
+                                "streamqueueDBCEFDF5",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        },
+                        "eventSourceArn": {
+                          "Fn::GetAtt": [
+                            "tblTransactionalDataTableB5E3911A",
+                            "StreamArn"
+                          ]
+                        },
+                        "maximumRetryAttempts": 10,
+                        "startingPosition": "TRIM_HORIZON"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_lambda.CfnEventSourceMapping",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.EventSourceMapping",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.29.0"
+            }
+          },
+          "streamqueue": {
+            "id": "streamqueue",
+            "path": "SnowbitStack/streamqueue",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/streamqueue/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SQS::Queue",
+                  "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sqs.CfnQueue",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sqs.Queue",
+              "version": "2.29.0"
+            }
+          },
+          "SO Log Group": {
+            "id": "SO Log Group",
+            "path": "SnowbitStack/SO Log Group",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SO Log Group/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Logs::LogGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "retentionInDays": 731
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.CfnLogGroup",
+                  "version": "2.29.0"
+                }
+              },
+              "Policy": {
+                "id": "Policy",
+                "path": "SnowbitStack/SO Log Group/Policy",
+                "children": {
+                  "ResourcePolicy": {
+                    "id": "ResourcePolicy",
+                    "path": "SnowbitStack/SO Log Group/Policy/ResourcePolicy",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::Logs::ResourcePolicy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "{\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"es.amazonaws.com\"},\"Resource\":\"",
+                              {
+                                "Fn::GetAtt": [
+                                  "SOLogGroupB340DE11",
+                                  "Arn"
+                                ]
+                              },
+                              "\"}],\"Version\":\"2012-10-17\"}"
+                            ]
+                          ]
+                        },
+                        "policyName": "SnowbitStackSOLogGroupPolicyBAB30460"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_logs.CfnResourcePolicy",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.ResourcePolicy",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_logs.LogGroup",
+              "version": "2.29.0"
+            }
+          },
+          "SO Log S3 Bucket": {
+            "id": "SO Log S3 Bucket",
+            "path": "SnowbitStack/SO Log S3 Bucket",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SO Log S3 Bucket/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                  "aws:cdk:cloudformation:props": {}
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_s3.Bucket",
+              "version": "2.29.0"
+            }
+          },
+          "SOLogStream": {
+            "id": "SOLogStream",
+            "path": "SnowbitStack/SOLogStream",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SOLogStream/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Logs::LogStream",
+                  "aws:cdk:cloudformation:props": {
+                    "logGroupName": {
+                      "Ref": "SOLogGroupB340DE11"
+                    },
+                    "logStreamName": "SOlogStream"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.CfnLogStream",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_logs.LogStream",
+              "version": "2.29.0"
+            }
+          },
+          "SsmStringParameterTransactionalTable": {
+            "id": "SsmStringParameterTransactionalTable",
+            "path": "SnowbitStack/SsmStringParameterTransactionalTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SsmStringParameterTransactionalTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "tblTransactionalDataTableB5E3911A"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "The name of the Transactional DynamoDB table",
+                    "name": "transactional_db_name",
+                    "tier": "Advanced"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.29.0"
+            }
+          },
+          "SsmStringParameterReferenceTable": {
+            "id": "SsmStringParameterReferenceTable",
+            "path": "SnowbitStack/SsmStringParameterReferenceTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SsmStringParameterReferenceTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "tblReferenceDataTableEC8CCADA"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "The name of the Reference DynamoDB table",
+                    "name": "reference_db_name",
+                    "tier": "Advanced"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.29.0"
+            }
+          },
+          "SsmStringParameterWebhookTable": {
+            "id": "SsmStringParameterWebhookTable",
+            "path": "SnowbitStack/SsmStringParameterWebhookTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/SsmStringParameterWebhookTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SSM::Parameter",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "String",
+                    "value": {
+                      "Ref": "tblWebhookDataTableCCADDFD6"
+                    },
+                    "allowedPattern": ".*",
+                    "description": "The name of the Webhook data DynamoDB table",
+                    "name": "webhook_db_name",
+                    "tier": "Advanced"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_ssm.CfnParameter",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-internal-alb": {
+            "id": "sm-snowbit-internal-alb",
+            "path": "SnowbitStack/sm-snowbit-internal-alb",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-internal-alb/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                  "aws:cdk:cloudformation:props": {
+                    "loadBalancerAttributes": [
+                      {
+                        "key": "deletion_protection.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "scheme": "internal",
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitprivatesg01F2BDFF",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnets": [
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                      },
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+                      }
+                    ],
+                    "type": "application"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-private-listener": {
+                "id": "sm-snowbit-private-listener",
+                "path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                      "aws:cdk:cloudformation:props": {
+                        "defaultActions": [
+                          {
+                            "type": "forward",
+                            "targetGroupArn": {
+                              "Ref": "smsnowbittg37B6FD374"
+                            }
+                          }
+                        ],
+                        "loadBalancerArn": {
+                          "Ref": "smsnowbitinternalalb0FF8A2A5"
+                        },
+                        "port": 80,
+                        "protocol": "HTTP"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationListener",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-tg-3": {
+            "id": "sm-snowbit-tg-3",
+            "path": "SnowbitStack/sm-snowbit-tg-3",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-tg-3/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "id": {
+                          "Ref": "smsnowbitinstance330AE67AC"
+                        },
+                        "port": 80
+                      }
+                    ],
+                    "targetType": "instance",
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationTargetGroup",
+              "version": "2.29.0"
+            }
+          },
+          "SnowbitAutoScalingGroup": {
+            "id": "SnowbitAutoScalingGroup",
+            "path": "SnowbitStack/SnowbitAutoScalingGroup",
+            "children": {
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/SnowbitAutoScalingGroup"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.29.0"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.29.0"
+                }
+              },
+              "LaunchConfig": {
+                "id": "LaunchConfig",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AutoScaling::LaunchConfiguration",
+                  "aws:cdk:cloudformation:props": {
+                    "imageId": {
+                      "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+                    },
+                    "instanceType": "t2.nano",
+                    "iamInstanceProfile": {
+                      "Ref": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+                    },
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitsg8B635388",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": "#!/bin/bash"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_autoscaling.CfnLaunchConfiguration",
+                  "version": "2.29.0"
+                }
+              },
+              "ASG": {
+                "id": "ASG",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/ASG",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AutoScaling::AutoScalingGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "maxSize": "1",
+                    "minSize": "1",
+                    "launchConfigurationName": {
+                      "Ref": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/SnowbitAutoScalingGroup",
+                        "propagateAtLaunch": true
+                      }
+                    ],
+                    "vpcZoneIdentifier": [
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                      },
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_autoscaling.CfnAutoScalingGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_autoscaling.AutoScalingGroup",
+              "version": "2.29.0"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "path": "SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.29.0"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "path": "SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Resource",
+              "version": "2.29.0"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "SnowbitStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "SnowbitStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.29.0"
+                }
+              },
+              "Condition": {
+                "id": "Condition",
+                "path": "SnowbitStack/CDKMetadata/Condition",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnCondition",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.1.51"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.29.0"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.29.0"
+    }
+  }
+}

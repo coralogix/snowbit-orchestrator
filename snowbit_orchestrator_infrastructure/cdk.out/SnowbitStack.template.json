@@ -1,0 +1,2007 @@
+{
+ "Resources": {
+  "smsnowbitvpc5B258D6E": {
+   "Type": "AWS::EC2::VPC",
+   "Properties": {
+    "CidrBlock": "10.0.0.0/16",
+    "EnableDnsHostnames": true,
+    "EnableDnsSupport": true,
+    "InstanceTenancy": "default",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/Resource"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.0.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "sm-snowbit-subnet-public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/Subnet"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTable"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableAssociation12065905": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB"
+    },
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTableAssociation"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1DefaultRoute0F93482B": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "smsnowbitvpcIGW85571544"
+    }
+   },
+   "DependsOn": [
+    "smsnowbitvpcVPCGW91769A2D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/DefaultRoute"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1EIP57A79015": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/EIP"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet1NATGatewayB8A1CAAC": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+    },
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "smsnowbitvpcsmsnowbitsubnetpublicSubnet1EIP57A79015",
+      "AllocationId"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/NATGateway"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.1.0/24",
+    "MapPublicIpOnLaunch": true,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "sm-snowbit-subnet-public"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Public"
+     },
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/Subnet"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTable"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAssociation11537125": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9"
+    },
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTableAssociation"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2DefaultRoute66583A01": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "GatewayId": {
+     "Ref": "smsnowbitvpcIGW85571544"
+    }
+   },
+   "DependsOn": [
+    "smsnowbitvpcVPCGW91769A2D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/DefaultRoute"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2EIPF23DF3D3": {
+   "Type": "AWS::EC2::EIP",
+   "Properties": {
+    "Domain": "vpc",
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/EIP"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetpublicSubnet2NATGateway5EC30677": {
+   "Type": "AWS::EC2::NatGateway",
+   "Properties": {
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+    },
+    "AllocationId": {
+     "Fn::GetAtt": [
+      "smsnowbitvpcsmsnowbitsubnetpublicSubnet2EIPF23DF3D3",
+      "AllocationId"
+     ]
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/NATGateway"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.2.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "sm-snowbit-subnet-private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/Subnet"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTable"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableAssociation8F2A527D": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4"
+    },
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTableAssociation"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet1DefaultRouteDAE89C14": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1NATGatewayB8A1CAAC"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/DefaultRoute"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219": {
+   "Type": "AWS::EC2::Subnet",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "AvailabilityZone": {
+     "Fn::Select": [
+      1,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "CidrBlock": "10.0.3.0/24",
+    "MapPublicIpOnLaunch": false,
+    "Tags": [
+     {
+      "Key": "aws-cdk:subnet-name",
+      "Value": "sm-snowbit-subnet-private"
+     },
+     {
+      "Key": "aws-cdk:subnet-type",
+      "Value": "Private"
+     },
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/Subnet"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331": {
+   "Type": "AWS::EC2::RouteTable",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTable"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableAssociation8E7334D0": {
+   "Type": "AWS::EC2::SubnetRouteTableAssociation",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331"
+    },
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTableAssociation"
+   }
+  },
+  "smsnowbitvpcsmsnowbitsubnetprivateSubnet2DefaultRoute1AF6D3CA": {
+   "Type": "AWS::EC2::Route",
+   "Properties": {
+    "RouteTableId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331"
+    },
+    "DestinationCidrBlock": "0.0.0.0/0",
+    "NatGatewayId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2NATGateway5EC30677"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/DefaultRoute"
+   }
+  },
+  "smsnowbitvpcIGW85571544": {
+   "Type": "AWS::EC2::InternetGateway",
+   "Properties": {
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-vpc"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/IGW"
+   }
+  },
+  "smsnowbitvpcVPCGW91769A2D": {
+   "Type": "AWS::EC2::VPCGatewayAttachment",
+   "Properties": {
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    },
+    "InternetGatewayId": {
+     "Ref": "smsnowbitvpcIGW85571544"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-vpc/VPCGW"
+   }
+  },
+  "smsnowbitsg8B635388": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SnowbitStack/sm-snowbit-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow SSH from anywhere",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow HTTP from anywhere",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-sg/Resource"
+   }
+  },
+  "smsnowbitalbsg8BBBBD39": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SnowbitStack/sm-snowbit-alb-sg",
+    "SecurityGroupEgress": [
+     {
+      "Description": "Allow health check",
+      "DestinationSecurityGroupId": {
+       "Fn::GetAtt": [
+        "smsnowbitsg8B635388",
+        "GroupId"
+       ]
+      },
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all inbound traffic",
+      "FromPort": 0,
+      "IpProtocol": "tcp",
+      "ToPort": 65535
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-alb-sg/Resource"
+   }
+  },
+  "smsnowbitprivatesg01F2BDFF": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "SnowbitStack/sm-snowbit-private-sg",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "Description": "Allow SSH from public subnet",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "SourceSecurityGroupId": {
+       "Fn::GetAtt": [
+        "smsnowbitsg8B635388",
+        "GroupId"
+       ]
+      },
+      "ToPort": 22
+     },
+     {
+      "Description": "Allow HTTP from public subnet",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "SourceSecurityGroupId": {
+       "Fn::GetAtt": [
+        "smsnowbitsg8B635388",
+        "GroupId"
+       ]
+      },
+      "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-private-sg/Resource"
+   }
+  },
+  "smsnowbitinstanceInstanceRole755AA52D": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance/InstanceRole/Resource"
+   }
+  },
+  "smsnowbitinstanceInstanceProfile25E0B609": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "smsnowbitinstanceInstanceRole755AA52D"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance/InstanceProfile"
+   }
+  },
+  "smsnowbitinstanceDAF6FC51": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "smsnowbitinstanceInstanceProfile25E0B609"
+    },
+    "ImageId": {
+     "Fn::FindInMap": [
+      "smsnowbitinstanceAmiMapC93820B3",
+      {
+       "Ref": "AWS::Region"
+      },
+      "ami"
+     ]
+    },
+    "InstanceType": "t2.nano",
+    "KeyName": "demokeyyt18",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitsg8B635388",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash\n#!/bin/bash\n\napt-get update -y\napt-get install nginx -y\n\nsystemctl status nginx"
+    }
+   },
+   "DependsOn": [
+    "smsnowbitinstanceInstanceRole755AA52D"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance/Resource"
+   }
+  },
+  "smsnowbitinstance2InstanceRole1EBFD9AB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance-2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-2/InstanceRole/Resource"
+   }
+  },
+  "smsnowbitinstance2InstanceProfile8734CDF5": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "smsnowbitinstance2InstanceRole1EBFD9AB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-2/InstanceProfile"
+   }
+  },
+  "smsnowbitinstance2EA560B23": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "smsnowbitinstance2InstanceProfile8734CDF5"
+    },
+    "ImageId": {
+     "Fn::FindInMap": [
+      "smsnowbitinstance2AmiMap737B86BE",
+      {
+       "Ref": "AWS::Region"
+      },
+      "ami"
+     ]
+    },
+    "InstanceType": "t2.nano",
+    "KeyName": "demokeyyt18",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitsg8B635388",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance-2"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "smsnowbitinstance2InstanceRole1EBFD9AB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-2/Resource"
+   }
+  },
+  "smsnowbitinstance3InstanceRole89D61BC1": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance-3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-3/InstanceRole/Resource"
+   }
+  },
+  "smsnowbitinstance3InstanceProfile10D4EDF0": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "smsnowbitinstance3InstanceRole89D61BC1"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-3/InstanceProfile"
+   }
+  },
+  "smsnowbitinstance330AE67AC": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "smsnowbitinstance3InstanceProfile10D4EDF0"
+    },
+    "ImageId": {
+     "Fn::FindInMap": [
+      "smsnowbitinstance3AmiMap33002027",
+      {
+       "Ref": "AWS::Region"
+      },
+      "ami"
+     ]
+    },
+    "InstanceType": "t2.nano",
+    "KeyName": "demokeyyt18",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitsg8B635388",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/sm-snowbit-instance-3"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "smsnowbitinstance3InstanceRole89D61BC1"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-instance-3/Resource"
+   }
+  },
+  "smsnowbittg13A9D7010": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "Targets": [
+     {
+      "Id": {
+       "Ref": "smsnowbitinstance2EA560B23"
+      },
+      "Port": 80
+     },
+     {
+      "Id": {
+       "Ref": "smsnowbitinstanceDAF6FC51"
+      },
+      "Port": 80
+     }
+    ],
+    "TargetType": "instance",
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-tg-1/Resource"
+   }
+  },
+  "smsnowbitalbC2862C71": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitalbsg8BBBBD39",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+     },
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+     }
+    ],
+    "Type": "application"
+   },
+   "DependsOn": [
+    "smsnowbitvpcsmsnowbitsubnetpublicSubnet1DefaultRoute0F93482B",
+    "smsnowbitvpcsmsnowbitsubnetpublicSubnet2DefaultRoute66583A01"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-alb/Resource"
+   }
+  },
+  "smsnowbitalbsmsnowbitlistener2BEEEA53": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "smsnowbittg13A9D7010"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "smsnowbitalbC2862C71"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-alb/sm-snowbit-listener/Resource"
+   }
+  },
+  "tblTransactionalDataTableB5E3911A": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "timestamp",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "timestamp",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "StreamSpecification": {
+     "StreamViewType": "NEW_AND_OLD_IMAGES"
+    },
+    "TimeToLiveSpecification": {
+     "AttributeName": "ttl",
+     "Enabled": true
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/Resource"
+   }
+  },
+  "tblTransactionalDataTableWriteScalingTarget3011AB9C": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblTransactionalDataTableB5E3911A"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblTransactionalDataTableWriteScalingTargetTrackingFB6B64C1": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblTransactionalDataTableWriteScalingTargetTracking1C38E478",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblTransactionalDataTableWriteScalingTarget3011AB9C"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "tblReferenceDataTableEC8CCADA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "account_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "account_id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/Resource"
+   }
+  },
+  "tblReferenceDataTableWriteScalingTargetA149EB95": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblReferenceDataTableEC8CCADA"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblReferenceDataTableWriteScalingTargetTracking5D57878C": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblReferenceDataTableWriteScalingTargetTrackingBB12C0C2",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblReferenceDataTableWriteScalingTargetA149EB95"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "tblWebhookDataTableCCADDFD6": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "KeySchema": [
+     {
+      "AttributeName": "alert_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "alert_id",
+      "AttributeType": "S"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/Resource"
+   }
+  },
+  "tblWebhookDataTableWriteScalingTarget5B6E9A38": {
+   "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+   "Properties": {
+    "MaxCapacity": 10,
+    "MinCapacity": 1,
+    "ResourceId": {
+     "Fn::Join": [
+      "",
+      [
+       "table/",
+       {
+        "Ref": "tblWebhookDataTableCCADDFD6"
+       }
+      ]
+     ]
+    },
+    "RoleARN": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":iam::",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":role/aws-service-role/dynamodb.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_DynamoDBTable"
+      ]
+     ]
+    },
+    "ScalableDimension": "dynamodb:table:WriteCapacityUnits",
+    "ServiceNamespace": "dynamodb"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Resource"
+   }
+  },
+  "tblWebhookDataTableWriteScalingTargetTracking445263E9": {
+   "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+   "Properties": {
+    "PolicyName": "SnowbitStacktblWebhookDataTableWriteScalingTargetTrackingD0539E80",
+    "PolicyType": "TargetTrackingScaling",
+    "ScalingTargetId": {
+     "Ref": "tblWebhookDataTableWriteScalingTarget5B6E9A38"
+    },
+    "TargetTrackingScalingPolicyConfiguration": {
+     "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "DynamoDBWriteCapacityUtilization"
+     },
+     "TargetValue": 75
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking/Resource"
+   }
+  },
+  "LambdaRole3A44B857": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Description": "DynamoDB executionRole for Lambda",
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaRole/Resource"
+   }
+  },
+  "LambdaRoleDefaultPolicy75625A82": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "sqs:GetQueueAttributes",
+        "sqs:GetQueueUrl",
+        "sqs:SendMessage"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "streamqueueDBCEFDF5",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "dynamodb:ListStreams",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:DescribeStream",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "tblTransactionalDataTableB5E3911A",
+         "StreamArn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LambdaRoleDefaultPolicy75625A82",
+    "Roles": [
+     {
+      "Ref": "LambdaRole3A44B857"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaRole/DefaultPolicy/Resource"
+   }
+  },
+  "secretpolicy9FB83878": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "secretsmanager:DescribeSecret",
+        "secretsmanager:GetRandomPassword",
+        "secretsmanager:GetResourcePolicy",
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:ListSecretVersionIds"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "secretpolicy9FB83878",
+    "Roles": [
+     {
+      "Ref": "LambdaRole3A44B857"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/secret-policy/Resource"
+   }
+  },
+  "zenpylambdalayer2E39B294": {
+   "Type": "AWS::Lambda::LayerVersion",
+   "Properties": {
+    "Content": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "677a0914d7682f8837feb4b0d47f3515a43be9dbb0c557424643738b0bebb7ef.zip"
+    },
+    "CompatibleRuntimes": [
+     "python3.7"
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/zenpy-lambda-layer/Resource",
+    "aws:asset:path": "asset.677a0914d7682f8837feb4b0d47f3515a43be9dbb0c557424643738b0bebb7ef",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Content"
+   }
+  },
+  "LambdaDBstreamshandler0499EEC8": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
+     },
+     "S3Key": "36ac08414798e6e1ed71421b22b66c673e9c27157aaae193b4a3e6b804b5f676.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LambdaRole3A44B857",
+      "Arn"
+     ]
+    },
+    "Handler": "dbstream_function.handler",
+    "Layers": [
+     {
+      "Ref": "zenpylambdalayer2E39B294"
+     }
+    ],
+    "Runtime": "python3.7"
+   },
+   "DependsOn": [
+    "LambdaRoleDefaultPolicy75625A82",
+    "LambdaRole3A44B857"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaDBstreamshandler/Resource",
+    "aws:asset:path": "asset.36ac08414798e6e1ed71421b22b66c673e9c27157aaae193b4a3e6b804b5f676",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "LambdaDBstreamshandlerDynamoDBEventSourceSnowbitStacktblTransactionalDataTable40DA5877FB1D8C33": {
+   "Type": "AWS::Lambda::EventSourceMapping",
+   "Properties": {
+    "FunctionName": {
+     "Ref": "LambdaDBstreamshandler0499EEC8"
+    },
+    "BatchSize": 5,
+    "BisectBatchOnFunctionError": true,
+    "DestinationConfig": {
+     "OnFailure": {
+      "Destination": {
+       "Fn::GetAtt": [
+        "streamqueueDBCEFDF5",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "EventSourceArn": {
+     "Fn::GetAtt": [
+      "tblTransactionalDataTableB5E3911A",
+      "StreamArn"
+     ]
+    },
+    "MaximumRetryAttempts": 10,
+    "StartingPosition": "TRIM_HORIZON"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877/Resource"
+   }
+  },
+  "streamqueueDBCEFDF5": {
+   "Type": "AWS::SQS::Queue",
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/streamqueue/Resource"
+   }
+  },
+  "SOLogGroupB340DE11": {
+   "Type": "AWS::Logs::LogGroup",
+   "Properties": {
+    "RetentionInDays": 731
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log Group/Resource"
+   }
+  },
+  "SOLogGroupPolicyResourcePolicyCCABFAD3": {
+   "Type": "AWS::Logs::ResourcePolicy",
+   "Properties": {
+    "PolicyDocument": {
+     "Fn::Join": [
+      "",
+      [
+       "{\"Statement\":[{\"Action\":[\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"es.amazonaws.com\"},\"Resource\":\"",
+       {
+        "Fn::GetAtt": [
+         "SOLogGroupB340DE11",
+         "Arn"
+        ]
+       },
+       "\"}],\"Version\":\"2012-10-17\"}"
+      ]
+     ]
+    },
+    "PolicyName": "SnowbitStackSOLogGroupPolicyBAB30460"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log Group/Policy/ResourcePolicy"
+   }
+  },
+  "SOLogS3Bucket9D1BAD5D": {
+   "Type": "AWS::S3::Bucket",
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SO Log S3 Bucket/Resource"
+   }
+  },
+  "SOLogStream06FF14E0": {
+   "Type": "AWS::Logs::LogStream",
+   "Properties": {
+    "LogGroupName": {
+     "Ref": "SOLogGroupB340DE11"
+    },
+    "LogStreamName": "SOlogStream"
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SOLogStream/Resource"
+   }
+  },
+  "SsmStringParameterTransactionalTable9E73A7EC": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblTransactionalDataTableB5E3911A"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Transactional DynamoDB table",
+    "Name": "transactional_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterTransactionalTable/Resource"
+   }
+  },
+  "SsmStringParameterReferenceTableDAC4B25F": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblReferenceDataTableEC8CCADA"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Reference DynamoDB table",
+    "Name": "reference_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterReferenceTable/Resource"
+   }
+  },
+  "SsmStringParameterWebhookTableBAE9B636": {
+   "Type": "AWS::SSM::Parameter",
+   "Properties": {
+    "Type": "String",
+    "Value": {
+     "Ref": "tblWebhookDataTableCCADDFD6"
+    },
+    "AllowedPattern": ".*",
+    "Description": "The name of the Webhook data DynamoDB table",
+    "Name": "webhook_db_name",
+    "Tier": "Advanced"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SsmStringParameterWebhookTable/Resource"
+   }
+  },
+  "smsnowbitinternalalb0FF8A2A5": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internal",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitprivatesg01F2BDFF",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+     },
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-internal-alb/Resource"
+   }
+  },
+  "smsnowbitinternalalbsmsnowbitprivatelistener3745C112": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "smsnowbittg37B6FD374"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "smsnowbitinternalalb0FF8A2A5"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource"
+   }
+  },
+  "smsnowbittg37B6FD374": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "Targets": [
+     {
+      "Id": {
+       "Ref": "smsnowbitinstance330AE67AC"
+      },
+      "Port": 80
+     }
+    ],
+    "TargetType": "instance",
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-tg-3/Resource"
+   }
+  },
+  "SnowbitAutoScalingGroupInstanceRole977AA3A4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/SnowbitAutoScalingGroup"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource"
+   }
+  },
+  "SnowbitAutoScalingGroupInstanceProfile83C0010A": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile"
+   }
+  },
+  "SnowbitAutoScalingGroupLaunchConfig4C1B587A": {
+   "Type": "AWS::AutoScaling::LaunchConfiguration",
+   "Properties": {
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t2.nano",
+    "IamInstanceProfile": {
+     "Ref": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitsg8B635388",
+       "GroupId"
+      ]
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig"
+   }
+  },
+  "SnowbitAutoScalingGroupASGBCFACCF0": {
+   "Type": "AWS::AutoScaling::AutoScalingGroup",
+   "Properties": {
+    "MaxSize": "1",
+    "MinSize": "1",
+    "LaunchConfigurationName": {
+     "Ref": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "PropagateAtLaunch": true,
+      "Value": "SnowbitStack/SnowbitAutoScalingGroup"
+     }
+    ],
+    "VPCZoneIdentifier": [
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+     },
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+     }
+    ]
+   },
+   "UpdatePolicy": {
+    "AutoScalingScheduledAction": {
+     "IgnoreUnmodifiedGroupSizeProperties": true
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/ASG"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VTy27bMBD8ltxptnFOOTpGGhhwC8UyfA1W1FpmLZEOHw4MQf/eJamHlZ44O1wuZ2fJJV8+858P8GUXojwvalnwNncgzoyojxbFkreHi2Drozpka5b5opYi94VCF7gJ7bR3uIeixomfuJW1WkhwUqsxOYDXTRaWP+DewOEX3Fhm5JXgVHijHBrCQ0JS0kcrR1pPDSrHchTeSHd7M9pfooYZsVHWgRKYSibcMQkNb3c6iR7WYTsz+iiJyjT1HC9OqGNYg3VS1BrKAmrKlaq6klOry4USYpt7MBWJHsTch3dZW6rwEiugCWmz+D5PWoeqz+lxx8qbgkaXNLLR+Ag6BtNR8E5bATVJ5O0LWMwpiDNxzsgiDGJgksjo3ZxJy97Qu6Ayeao22TIjOlZDU5TA2y3c0BzQ2H7qs/iXV2J4DiN+vdIkc+2NwN/UAtWMj+Q/tmP26QOsRWf5KiwUU3NenNGFFlmC4XBCdODT8vbdo482RUBKdUXsVlfjnEa8QxtvnLr8xlBm7gxC0x9LAV1km/CFTDAEDDTo0tjGgKZzP5IVBb2BkwogR05rrY6y8mb8Nt9Tu26UGbYHy6Ij9Imr3r+ZjPsDdEEpQ/GOZTd30urHE3/mj48Pf62UC+OVkw3yXVr/AYkq5LwqBAAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Mappings": {
+  "smsnowbitinstanceAmiMapC93820B3": {
+   "us-east-1": {
+    "ami": "ami-083654bd07b5da81d"
+   }
+  },
+  "smsnowbitinstance2AmiMap737B86BE": {
+   "us-east-1": {
+    "ami": "ami-083654bd07b5da81d"
+   }
+  },
+  "smsnowbitinstance3AmiMap33002027": {
+   "us-east-1": {
+    "ami": "ami-083654bd07b5da81d"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

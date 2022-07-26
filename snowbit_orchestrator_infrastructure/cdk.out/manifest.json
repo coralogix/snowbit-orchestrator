@@ -1,0 +1,502 @@
+{
+  "version": "20.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "SnowbitStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "SnowbitStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "SnowbitStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "SnowbitStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/214f30cbf3734f7b442dfd77a71caacc1f0ac23d62a215959f9ceb666ff051ca.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "SnowbitStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "SnowbitStack.assets"
+      ],
+      "metadata": {
+        "/SnowbitStack/sm-snowbit-vpc/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpc5B258D6E"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1Subnet5851A0DD"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableC09356CB"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1RouteTableAssociation12065905"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1DefaultRoute0F93482B"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1EIP57A79015"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet1NATGatewayB8A1CAAC"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2Subnet45BB312A"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAB4782C9"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2RouteTableAssociation11537125"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2DefaultRoute66583A01"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2EIPF23DF3D3"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-publicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetpublicSubnet2NATGateway5EC30677"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableA86666E4"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1RouteTableAssociation8F2A527D"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1DefaultRouteDAE89C14"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableCDE42331"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2RouteTableAssociation8E7334D0"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/sm-snowbit-subnet-privateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2DefaultRoute1AF6D3CA"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcIGW85571544"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-vpc/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitvpcVPCGW91769A2D"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitsg8B635388"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-alb-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitalbsg8BBBBD39"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-private-sg/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitprivatesg01F2BDFF"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstanceInstanceRole755AA52D"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstanceInstanceProfile25E0B609"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance/AmiMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstanceAmiMapC93820B3"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstanceDAF6FC51"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-2/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance2InstanceRole1EBFD9AB"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-2/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance2InstanceProfile8734CDF5"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-2/AmiMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance2AmiMap737B86BE"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-2/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance2EA560B23"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-3/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance3InstanceRole89D61BC1"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-3/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance3InstanceProfile10D4EDF0"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-3/AmiMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance3AmiMap33002027"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-instance-3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinstance330AE67AC"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-tg-1/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbittg13A9D7010"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-alb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitalbC2862C71"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-alb/sm-snowbit-listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitalbsmsnowbitlistener2BEEEA53"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableB5E3911A"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableWriteScalingTarget3011AB9C"
+          }
+        ],
+        "/SnowbitStack/tbl_Transactional_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblTransactionalDataTableWriteScalingTargetTrackingFB6B64C1"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableEC8CCADA"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableWriteScalingTargetA149EB95"
+          }
+        ],
+        "/SnowbitStack/tbl_Reference_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblReferenceDataTableWriteScalingTargetTracking5D57878C"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableCCADDFD6"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableWriteScalingTarget5B6E9A38"
+          }
+        ],
+        "/SnowbitStack/tbl_Webhook_Data_Table/WriteScaling/Target/Tracking/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "tblWebhookDataTableWriteScalingTargetTracking445263E9"
+          }
+        ],
+        "/SnowbitStack/LambdaRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRole3A44B857"
+          }
+        ],
+        "/SnowbitStack/LambdaRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaRoleDefaultPolicy75625A82"
+          }
+        ],
+        "/SnowbitStack/secret-policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "secretpolicy9FB83878"
+          }
+        ],
+        "/SnowbitStack/zenpy-lambda-layer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "zenpylambdalayer2E39B294"
+          }
+        ],
+        "/SnowbitStack/LambdaDBstreamshandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaDBstreamshandler0499EEC8"
+          }
+        ],
+        "/SnowbitStack/LambdaDBstreamshandler/DynamoDBEventSource:SnowbitStacktblTransactionalDataTable40DA5877/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "LambdaDBstreamshandlerDynamoDBEventSourceSnowbitStacktblTransactionalDataTable40DA5877FB1D8C33"
+          }
+        ],
+        "/SnowbitStack/streamqueue/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "streamqueueDBCEFDF5"
+          }
+        ],
+        "/SnowbitStack/SO Log Group/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogGroupB340DE11"
+          }
+        ],
+        "/SnowbitStack/SO Log Group/Policy/ResourcePolicy": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogGroupPolicyResourcePolicyCCABFAD3"
+          }
+        ],
+        "/SnowbitStack/SO Log S3 Bucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogS3Bucket9D1BAD5D"
+          }
+        ],
+        "/SnowbitStack/SOLogStream/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SOLogStream06FF14E0"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterTransactionalTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterTransactionalTable9E73A7EC"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterReferenceTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterReferenceTableDAC4B25F"
+          }
+        ],
+        "/SnowbitStack/SsmStringParameterWebhookTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmStringParameterWebhookTableBAE9B636"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-internal-alb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinternalalb0FF8A2A5"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinternalalbsmsnowbitprivatelistener3745C112"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-tg-3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbittg37B6FD374"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/ASG": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupASGBCFACCF0"
+          }
+        ],
+        "/SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+          }
+        ],
+        "/SnowbitStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/SnowbitStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable"
+          }
+        ],
+        "/SnowbitStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/SnowbitStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "SnowbitStack"
+    }
+  }
+}
