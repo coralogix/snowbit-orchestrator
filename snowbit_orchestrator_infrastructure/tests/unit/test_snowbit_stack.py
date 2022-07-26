@@ -10,6 +10,15 @@ def test_sqs_queue_created():
     stack = SnowbitStack(app, "snowbit")
     template = assertions.Template.from_stack(stack)
 
+
+    template.has_resource_properties(
+        "AWS::Lambda::Function",
+        {
+            "Handler": "dbstream_function.handler",
+            "Runtimne": "Python3.7"
+        },
+    )
+
 #     template.has_resource_properties("AWS::SQS::Queue", {
 #         "VisibilityTimeout": 300
 #     })
