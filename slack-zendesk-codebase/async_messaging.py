@@ -12,7 +12,21 @@ from time import *
 import time
 import toml
 
+ssm_client = boto3.client('ssm')
+ssm_response = ssm_client.get_parameter(
+    Name='transactional_db_name',
+    WithDecryption=False
+)
+tbl_transactional_table_name = ssm_response['Parameter']['Value']
+
+ref_ssm_response = ssm_client.get_parameter(
+    Name='reference_db_name',
+    WithDecryption=False
+)
+tbl_reference_table_name = ref_ssm_response['Parameter']['Value']
+
 secrets_client = boto3.client('secretsmanager')
+
 
 secrets_resp = secrets_client.get_secret_value(
     SecretId='SlackSecrets'
@@ -51,7 +65,7 @@ dynamodb = boto3.resource('dynamodb')
 dynamodb_client = boto3.client('dynamodb')
 
 
-table = dynamodb.Table('InfratestcdkStack-TableCD117FA1-1S0N39VCN52J9')  # should change this using !Ref
+table = dynamodb.Table(tbl_transactional_table_name) 
 
 app = AsyncApp(token=SLACK_BOT_TOKEN)
 
@@ -97,7 +111,7 @@ async def handle_some_action(ack, body, logger, say):
     # await say(f"Thanks <@{user['name']}>!")
     await say(toml_data_dict['slack_details']['thanks_for_response']['text'].format(user['name']))
     logger.info(body['message_ts'])
-    await app.client.chat_update(channel=body['channel']['id'], ts=body['message_ts'], text='Alert acknowledged!',
+    await app.client.chat_update(channel=body['channel']['id'], ts=body['message_ts'], text=toml_data_dict['slack_details']['post_message_to_slack']['alert_acknowledged'],
                                  attachments=[])
     table.update_item(
         Key={
@@ -112,8 +126,7 @@ async def handle_some_action(ack, body, logger, say):
     )
 
     resp = dynamodb_client.get_item(
-        TableName="InfratestcdkStack-TableCD117FA1-1S0N39VCN52J9",
-        # should reference table created using cdk through !Ref
+        TableName=tbl_transactional_table_name,
         Key={
             'timestamp': {'S': body['message_ts']},
         }
@@ -122,7 +135,7 @@ async def handle_some_action(ack, body, logger, say):
     z_id = resp['Item']['zen_ticket_id']['N']
     user = credentials['email'] + '/token'
     headers = {'content-type': 'application/json'}
-    url = 'https://antstackhelp.zendesk.com/api/v2/ticket_fields'
+    url = toml_data_dict['zendesk_details']['ticket_fields_api_url']['url']
     data = requests.get(
         url,
         auth=(user, credentials['token']),
@@ -151,7 +164,7 @@ async def create_zen_ticket(process_json, customer_name, slack_channel_handle_na
     process_json.update({"customer_name": customer_name})
     user = credentials['email'] + '/token'
     headers = {'content-type': 'application/json'}
-    url = 'https://antstackhelp.zendesk.com/api/v2/ticket_fields'
+    url = toml_data_dict['zendesk_details']['ticket_fields_api_url']['url']
     data = requests.get(
         url,
         auth=(user, credentials['token']),
@@ -170,11 +183,10 @@ async def create_zen_ticket(process_json, customer_name, slack_channel_handle_na
 
     return ticket_id
 
-
 async def main(process_json):
     # mapping aws_account_id with reference table to obtain slack_channel_name and customer_name
     ref_resp = dynamodb_client.get_item(
-        TableName="tbl_reference_data",  # reference table aws_acc_id, cust_name, slack_channel, slack_workspace
+        TableName=tbl_reference_table_name,  # reference table aws_acc_id, cust_name, slack_channel, slack_workspace
         Key={
             'account_id': {'S': process_json['account_id']}
         }
