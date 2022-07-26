@@ -4,7 +4,8 @@ data = {
       "text": "An alert with description as {} has been raised in coralogix account {}. "
               "Is it approved operation or not?",
       "color": "#3AA3E3",
-      "alert_message": "Alert Raised!"
+      "alert_message": "Alert Raised!",
+      "alert_acknowledged": "Alert Acknowledged!"
     },
     "thanks_for_response": {
       "text": f"Thanks <@{{}}>!"
