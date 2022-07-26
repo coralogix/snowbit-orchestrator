@@ -21,14 +21,14 @@ data = {
 
 # toml_string = toml.dumps(data)  
 
-# with open(output_file_name, "w") as toml_file:  # writes 'data' to toml file
-#     toml.dump(data, toml_file)
+with open(output_file_name, "w") as toml_file:  # writes 'data' to toml file
+    toml.dump(data, toml_file)
 
 
 
-with open(output_file_name, "r") as toml_file: # reads from toml file
-  toml_string = toml.load(toml_file)
+# with open(output_file_name, "r") as toml_file: # reads from toml file
+#   toml_string = toml.load(toml_file)
 
-print(toml_string)
+# print(toml_string)
 
 
