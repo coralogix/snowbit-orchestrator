@@ -3,7 +3,14 @@ import time
 import toml
 
 logs = boto3.client('logs')
+client = boto3.client('ssm')
 
+ssm_response = client.get_parameter(
+    Name='webhook_db_name',
+    WithDecryption=False
+)
+
+tbl_webhook_table_name = ssm_response['Parameter']['Value']
 
 LOG_GROUP = 'InfratestcdkStack-SOLogGroupB340DE11-L6YUkaEBVOcI'
 # should refer to cloudwatch created cdk using !Ref
@@ -20,7 +27,7 @@ class InserttoDb:
     def __init__(self, process_json):
         self.clean_json = process_json
         self.dynamodb = boto3.resource('dynamodb')
-        self.table = self.dynamodb.Table('tbl_webhook_data')
+        self.table = self.dynamodb.Table(tbl_webhook_table_name)
 
     def insertjson_todb(self):
         self.table.put_item(Item=self.clean_json)
