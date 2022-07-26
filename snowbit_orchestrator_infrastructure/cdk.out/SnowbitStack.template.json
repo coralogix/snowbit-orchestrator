@@ -564,6 +564,13 @@
        ]
       },
       "ToPort": 80
+     },
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow from anyone on port 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
      }
     ],
     "VpcId": {
@@ -1545,10 +1552,202 @@
     "aws:cdk:path": "SnowbitStack/SsmStringParameterWebhookTable/Resource"
    }
   },
+  "smsnowbitinternalalb0FF8A2A5": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Scheme": "internal",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitprivatesg01F2BDFF",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+     },
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-internal-alb/Resource"
+   }
+  },
+  "smsnowbitinternalalbsmsnowbitprivatelistener3745C112": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "smsnowbittg37B6FD374"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "smsnowbitinternalalb0FF8A2A5"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource"
+   }
+  },
+  "smsnowbittg37B6FD374": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "Targets": [
+     {
+      "Id": {
+       "Ref": "smsnowbitinstance330AE67AC"
+      },
+      "Port": 80
+     }
+    ],
+    "TargetType": "instance",
+    "VpcId": {
+     "Ref": "smsnowbitvpc5B258D6E"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/sm-snowbit-tg-3/Resource"
+   }
+  },
+  "SnowbitAutoScalingGroupInstanceRole977AA3A4": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "SnowbitStack/SnowbitAutoScalingGroup"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource"
+   }
+  },
+  "SnowbitAutoScalingGroupInstanceProfile83C0010A": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile"
+   }
+  },
+  "SnowbitAutoScalingGroupLaunchConfig4C1B587A": {
+   "Type": "AWS::AutoScaling::LaunchConfiguration",
+   "Properties": {
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t2.nano",
+    "IamInstanceProfile": {
+     "Ref": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+    },
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "smsnowbitsg8B635388",
+       "GroupId"
+      ]
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig"
+   }
+  },
+  "SnowbitAutoScalingGroupASGBCFACCF0": {
+   "Type": "AWS::AutoScaling::AutoScalingGroup",
+   "Properties": {
+    "MaxSize": "1",
+    "MinSize": "1",
+    "LaunchConfigurationName": {
+     "Ref": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "PropagateAtLaunch": true,
+      "Value": "SnowbitStack/SnowbitAutoScalingGroup"
+     }
+    ],
+    "VPCZoneIdentifier": [
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+     },
+     {
+      "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+     }
+    ]
+   },
+   "UpdatePolicy": {
+    "AutoScalingScheduledAction": {
+     "IgnoreUnmodifiedGroupSizeProperties": true
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "SnowbitStack/SnowbitAutoScalingGroup/ASG"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VTTW/bMAz9Lb2r2pqeekyDrgiQDV4c5FrQMptqsaVMolIEhv/7KMkfSXfi4/MT9UjKC7l4kt/v4NPfq/p43+hKdiWBOgqm3jpUC9ntT0qs3s2+WIkiVI1WZagMUuRmtLWBcAdVgzM/c0vvrdJA2ppJHMHLuojhF9ArEH7CRRROnxnOhdeG0DEeBdnJkC2JvX60aEiUqILTdHl1NpyShxtibTyBUZhLZtwLDa3stjabHuP4uXD2XTNVWO45XZxRL7ABT1o1FuoKGtZqczjzpJanEwtSmztwBzY9mrlOr1QbrvCcKqCLspv8Wqc9oRk0A+5FfTHQ2ppXNg0+gV7AfBQCWa+gYYuyewaPJSdpJ0ROV3ERI5NNptndMjnsHL8LLlPmavNYboheNNBWNchuAxd0e3R+2PpN/iMYNT6HCb+ceZOlDU7hT26Ba6ZH8h/bC//4Bt4jebmMgXNuLqgjUmxRZBgPZ8QH/nrZ/Q4Y0pgSYKf2wOzGHqY9TXiLPt04d/mFYWVJDqEdjuWEL/Jt/IVcHAg4aJHy2qak76fikR8bTX3wr3cYur7WrKypdZxQL4oLfVjz7VE+yYeHuz9e63sXDOkW5TbHfxh8W27TAwAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VTy27bMBD8ltxptnFOOTpGGhhwC8UyfA1W1FpmLZEOHw4MQf/eJamHlZ44O1wuZ2fJJV8+858P8GUXojwvalnwNncgzoyojxbFkreHi2Drozpka5b5opYi94VCF7gJ7bR3uIeixomfuJW1WkhwUqsxOYDXTRaWP+DewOEX3Fhm5JXgVHijHBrCQ0JS0kcrR1pPDSrHchTeSHd7M9pfooYZsVHWgRKYSibcMQkNb3c6iR7WYTsz+iiJyjT1HC9OqGNYg3VS1BrKAmrKlaq6klOry4USYpt7MBWJHsTch3dZW6rwEiugCWmz+D5PWoeqz+lxx8qbgkaXNLLR+Ag6BtNR8E5bATVJ5O0LWMwpiDNxzsgiDGJgksjo3ZxJy97Qu6Ayeao22TIjOlZDU5TA2y3c0BzQ2H7qs/iXV2J4DiN+vdIkc+2NwN/UAtWMj+Q/tmP26QOsRWf5KiwUU3NenNGFFlmC4XBCdODT8vbdo482RUBKdUXsVlfjnEa8QxtvnLr8xlBm7gxC0x9LAV1km/CFTDAEDDTo0tjGgKZzP5IVBb2BkwogR05rrY6y8mb8Nt9Tu26UGbYHy6Ij9Imr3r+ZjPsDdEEpQ/GOZTd30urHE3/mj48Pf62UC+OVkw3yXVr/AYkq5LwqBAAA"
    },
    "Metadata": {
     "aws:cdk:path": "SnowbitStack/CDKMetadata/Default"
@@ -1571,6 +1770,17 @@
    "us-east-1": {
     "ami": "ami-083654bd07b5da81d"
    }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
   }
  },
  "Conditions": {
@@ -1765,13 +1975,6 @@
      ]
     }
    ]
-  }
- },
- "Parameters": {
-  "BootstrapVersion": {
-   "Type": "AWS::SSM::Parameter::Value<String>",
-   "Default": "/cdk-bootstrap/hnb659fds/version",
-   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
   }
  },
  "Rules": {

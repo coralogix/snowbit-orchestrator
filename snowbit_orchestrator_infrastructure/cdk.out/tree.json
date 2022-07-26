@@ -808,6 +808,13 @@
                         "fromPort": 80,
                         "toPort": 80,
                         "description": "Allow HTTP from public subnet"
+                      },
+                      {
+                        "cidrIp": "0.0.0.0/0",
+                        "ipProtocol": "tcp",
+                        "fromPort": 80,
+                        "toPort": 80,
+                        "description": "Allow from anyone on port 80"
                       }
                     ],
                     "vpcId": {
@@ -2384,6 +2391,291 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_ssm.StringParameter",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-internal-alb": {
+            "id": "sm-snowbit-internal-alb",
+            "path": "SnowbitStack/sm-snowbit-internal-alb",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-internal-alb/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+                  "aws:cdk:cloudformation:props": {
+                    "loadBalancerAttributes": [
+                      {
+                        "key": "deletion_protection.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "scheme": "internal",
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitprivatesg01F2BDFF",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "subnets": [
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                      },
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+                      }
+                    ],
+                    "type": "application"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnLoadBalancer",
+                  "version": "2.29.0"
+                }
+              },
+              "sm-snowbit-private-listener": {
+                "id": "sm-snowbit-private-listener",
+                "path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::Listener",
+                      "aws:cdk:cloudformation:props": {
+                        "defaultActions": [
+                          {
+                            "type": "forward",
+                            "targetGroupArn": {
+                              "Ref": "smsnowbittg37B6FD374"
+                            }
+                          }
+                        ],
+                        "loadBalancerArn": {
+                          "Ref": "smsnowbitinternalalb0FF8A2A5"
+                        },
+                        "port": 80,
+                        "protocol": "HTTP"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnListener",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationListener",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationLoadBalancer",
+              "version": "2.29.0"
+            }
+          },
+          "sm-snowbit-tg-3": {
+            "id": "sm-snowbit-tg-3",
+            "path": "SnowbitStack/sm-snowbit-tg-3",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "SnowbitStack/sm-snowbit-tg-3/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "port": 80,
+                    "protocol": "HTTP",
+                    "targetGroupAttributes": [
+                      {
+                        "key": "stickiness.enabled",
+                        "value": "false"
+                      }
+                    ],
+                    "targets": [
+                      {
+                        "id": {
+                          "Ref": "smsnowbitinstance330AE67AC"
+                        },
+                        "port": 80
+                      }
+                    ],
+                    "targetType": "instance",
+                    "vpcId": {
+                      "Ref": "smsnowbitvpc5B258D6E"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.CfnTargetGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_elasticloadbalancingv2.ApplicationTargetGroup",
+              "version": "2.29.0"
+            }
+          },
+          "SnowbitAutoScalingGroup": {
+            "id": "SnowbitAutoScalingGroup",
+            "path": "SnowbitStack/SnowbitAutoScalingGroup",
+            "children": {
+              "InstanceRole": {
+                "id": "InstanceRole",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "tags": [
+                          {
+                            "key": "Name",
+                            "value": "SnowbitStack/SnowbitAutoScalingGroup"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.29.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.29.0"
+                }
+              },
+              "InstanceProfile": {
+                "id": "InstanceProfile",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.CfnInstanceProfile",
+                  "version": "2.29.0"
+                }
+              },
+              "LaunchConfig": {
+                "id": "LaunchConfig",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AutoScaling::LaunchConfiguration",
+                  "aws:cdk:cloudformation:props": {
+                    "imageId": {
+                      "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+                    },
+                    "instanceType": "t2.nano",
+                    "iamInstanceProfile": {
+                      "Ref": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+                    },
+                    "securityGroups": [
+                      {
+                        "Fn::GetAtt": [
+                          "smsnowbitsg8B635388",
+                          "GroupId"
+                        ]
+                      }
+                    ],
+                    "userData": {
+                      "Fn::Base64": "#!/bin/bash"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_autoscaling.CfnLaunchConfiguration",
+                  "version": "2.29.0"
+                }
+              },
+              "ASG": {
+                "id": "ASG",
+                "path": "SnowbitStack/SnowbitAutoScalingGroup/ASG",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::AutoScaling::AutoScalingGroup",
+                  "aws:cdk:cloudformation:props": {
+                    "maxSize": "1",
+                    "minSize": "1",
+                    "launchConfigurationName": {
+                      "Ref": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+                    },
+                    "tags": [
+                      {
+                        "key": "Name",
+                        "value": "SnowbitStack/SnowbitAutoScalingGroup",
+                        "propagateAtLaunch": true
+                      }
+                    ],
+                    "vpcZoneIdentifier": [
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet1Subnet15FF0599"
+                      },
+                      {
+                        "Ref": "smsnowbitvpcsmsnowbitsubnetprivateSubnet2Subnet00270219"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_autoscaling.CfnAutoScalingGroup",
+                  "version": "2.29.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_autoscaling.AutoScalingGroup",
+              "version": "2.29.0"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "path": "SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.29.0"
+            }
+          },
+          "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118": {
+            "id": "SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "path": "SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.Resource",
               "version": "2.29.0"
             }
           },

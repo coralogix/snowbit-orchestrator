@@ -23,7 +23,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/f42bacf81d009393de956150054f10b5f0482b03f41a38eeb54da25d5aef1a93.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/214f30cbf3734f7b442dfd77a71caacc1f0ac23d62a215959f9ceb666ff051ca.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -421,6 +421,54 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "SsmStringParameterWebhookTableBAE9B636"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-internal-alb/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinternalalb0FF8A2A5"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-internal-alb/sm-snowbit-private-listener/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbitinternalalbsmsnowbitprivatelistener3745C112"
+          }
+        ],
+        "/SnowbitStack/sm-snowbit-tg-3/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "smsnowbittg37B6FD374"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupInstanceRole977AA3A4"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupInstanceProfile83C0010A"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/LaunchConfig": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupLaunchConfig4C1B587A"
+          }
+        ],
+        "/SnowbitStack/SnowbitAutoScalingGroup/ASG": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SnowbitAutoScalingGroupASGBCFACCF0"
+          }
+        ],
+        "/SnowbitStack/SsmParameterValue:--aws--service--ami-amazon-linux-latest--amzn-ami-hvm-x86_64-gp2:C96584B6-F00A-464E-AD19-53AFF4B05118.Parameter": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
           }
         ],
         "/SnowbitStack/CDKMetadata/Default": [

@@ -10,6 +10,7 @@ from aws_cdk import aws_lambda_event_sources
 from aws_cdk import aws_logs
 from aws_cdk import aws_s3
 from aws_cdk import aws_ssm
+from aws_cdk import aws_autoscaling
 from constructs import Construct
 
 class SnowbitStack(Stack):
@@ -276,6 +277,45 @@ class SnowbitStack(Stack):
         string_value=self.webhook_data.table_name,
         tier=aws_ssm.ParameterTier.ADVANCED,
         )
+
+        instance_target_3 = target.InstanceTarget(self.ec2_instance_3, port=80)
+        # ! INTERNAL APPLICATION LOAD BALANCER FOR SO 
+        # self.ec2_instance_3
+        self.internal_alb = alb.ApplicationLoadBalancer(self, 
+            id='sm-snowbit-internal-alb',
+            internet_facing=False,
+            vpc=self.vpc,
+            security_group=self.sg_private
+        )
+        self.tg_3 = alb.ApplicationTargetGroup(self,
+            id='sm-snowbit-tg-3',
+            target_type=alb.TargetType.INSTANCE,
+            port=80,
+            vpc=self.vpc,
+            targets=[instance_target_3]
+        )
+         # ! ALB Listener
+        self.private_listener = self.internal_alb.add_listener(
+            id='sm-snowbit-private-listener',
+            port=80
+        )
+        # ! ALB Target group
+        self.private_listener.add_target_groups(
+            id='sm-snowbit-target-group-3',
+            target_groups=[self.tg_3]
+        )
+
+        # AUTOSCALING FOR EC2 INSTANCES
+        aws_autoscaling.AutoScalingGroup(self, "SnowbitAutoScalingGroup",
+        vpc=self.vpc,
+        instance_type=ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.NANO),
+        machine_image=ec2.AmazonLinuxImage(),
+        security_group=self.sg,
+        # desired_capacity=2
+        )
+
+
+
 
 
 
